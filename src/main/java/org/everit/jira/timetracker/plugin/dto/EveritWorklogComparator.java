@@ -45,10 +45,10 @@ public class EveritWorklogComparator implements Comparator<EveritWorklog>, Seria
         try {
             o1StartDate = DateTimeConverterUtil.stringTimeToDateTime(o1.getStartTime());
             o2StartDate = DateTimeConverterUtil.stringTimeToDateTime(o2.getStartTime());
-        } catch (ParseException e) {
+        } catch (final ParseException e) {
             throw new IllegalArgumentException("Faild to convert startDate to Date", e);
         }
-        int result = o1StartDate.compareTo(o2StartDate);
+        final int result = o1StartDate.compareTo(o2StartDate);
         if (result != 0) {
             return result;
         }
@@ -57,7 +57,7 @@ public class EveritWorklogComparator implements Comparator<EveritWorklog>, Seria
         try {
             o1EndDate = DateTimeConverterUtil.stringTimeToDateTime(o1.getEndTime());
             o2EndDate = DateTimeConverterUtil.stringTimeToDateTime(o2.getEndTime());
-        } catch (ParseException e) {
+        } catch (final ParseException e) {
             throw new IllegalArgumentException("Faild to convert endDate to Date", e);
         }
         return o1EndDate.compareTo(o2EndDate);

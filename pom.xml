@@ -112,6 +112,12 @@
       <groupId>com.atlassian.ofbiz</groupId>
       <artifactId>entityengine</artifactId>
       <version>1.0.3</version>
+      <exclusions>
+      	<exclusion>
+      		<artifactId>log4j</artifactId>
+      		<groupId>log4j</groupId>
+      	</exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>opensymphony</groupId>

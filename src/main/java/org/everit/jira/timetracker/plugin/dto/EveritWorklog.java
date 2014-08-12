@@ -51,10 +51,22 @@ public class EveritWorklog implements Serializable {
      */
     private Long worklogId;
     /**
-     * The start Time.
+     * The start Time. hh:mm
      */
     private String startTime;
     /**
+     * The start Time. yyyy-HH-dd
+     */
+    private String startDate;
+    public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	/**
      * The worklog Issue key.
      */
     private String issue;
@@ -110,6 +122,7 @@ public class EveritWorklog implements Serializable {
             final List<Pattern> collectorIssuePatterns) throws ParseException {
         worklogId = worklogGv.getLong("id");
         startTime = worklogGv.getString("startdate");
+        startDate = DateTimeConverterUtil.dateTimeStringToDateString(startTime);
         startTime = DateTimeConverterUtil.stringDateToStringTime(startTime);
         issueId = new Long(worklogGv.getString("issue"));
         IssueManager issueManager = ComponentManager.getInstance()
@@ -145,6 +158,7 @@ public class EveritWorklog implements Serializable {
             final List<Pattern> collectorIssuePatterns) throws ParseException, SQLException {
         worklogId = rs.getLong("id");
         startTime = rs.getString("startdate");
+        startDate = DateTimeConverterUtil.dateTimeStringToDateString(startTime);
         startTime = DateTimeConverterUtil.stringDateToStringTime(startTime);
         issueId = rs.getLong("issueid");
         IssueManager issueManager = ComponentManager.getInstance()

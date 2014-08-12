@@ -90,7 +90,18 @@ public final class DateTimeConverterUtil {
         String dateString = formatterDate.format(date);
         return dateString;
     }
-
+    
+    /**
+     * Convert the date String ({@value #DATE_TIME_FORMAT}) to String ({@value #DATE_FORMAT}).
+     *
+     * @param dateTimeString
+     *            The String date-time to convert.
+     * @return The result date string.
+     */
+    public static String dateTimeStringToDateString(final String dateTimeString) {
+        return dateTimeString.substring(0,DATE_FORMAT.length());
+    }
+    
     /**
      * Check the Time is valid to the {@value #JIRA_DURATION_PATTERN} pattern.
      *
