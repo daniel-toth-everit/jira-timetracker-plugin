@@ -24,14 +24,12 @@ import org.everit.jira.reporting.plugin.dto.ReportSearchParam;
 import org.everit.jira.reporting.plugin.dto.UserSummaryDTO;
 import org.everit.jira.reporting.plugin.query.util.QueryUtil;
 
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLQuery;
 
@@ -43,15 +41,18 @@ public class UserSummaryReportQueryBuilder extends AbstractReportQuery<UserSumma
   public UserSummaryReportQueryBuilder(final ReportSearchParam reportSearchParam) {
     super(reportSearchParam);
   }
+  //
+  // private Expression<?>[] createQueryGroupBy() {
+  // return new Expression<?>[] { qCwdUser.displayName,
+  // qWorklog.author };
+  // }
 
-  private Expression<?>[] createQueryGroupBy() {
-    return new Expression<?>[] { qCwdUser.displayName,
-        qWorklog.author };
-  }
-
-  private QBean<UserSummaryDTO> createQuerySelectProjection(final StringExpression userExpression) {
+  private QBean<UserSummaryDTO> createQuerySelectProjection() {
+    // final StringExpression userExpression
     return Projections.bean(UserSummaryDTO.class,
-        userExpression.as(UserSummaryDTO.AliasNames.USER_DISPLAY_NAME),
+        QueryUtil.selectDisplayNameForWorklogAuthor(qWorklog.author)
+            .as(UserSummaryDTO.AliasNames.USER_DISPLAY_NAME),
+        // userExpression.as(UserSummaryDTO.AliasNames.USER_DISPLAY_NAME),
         qWorklog.timeworked.sum().as(UserSummaryDTO.AliasNames.WORKLOGGED_TIME_SUM));
   }
 
@@ -87,19 +88,20 @@ public class UserSummaryReportQueryBuilder extends AbstractReportQuery<UserSumma
       @Override
       public List<UserSummaryDTO> call(final Connection connection,
           final Configuration configuration) throws SQLException {
-        StringExpression userExpression = QueryUtil.createUserExpression(qCwdUser, qWorklog);
+        // StringExpression userExpression = QueryUtil.createUserExpression(qCwdUser, qWorklog);
 
         SQLQuery<UserSummaryDTO> query = new SQLQuery<UserSummaryDTO>(connection, configuration)
-            .select(createQuerySelectProjection(userExpression));
+            .select(createQuerySelectProjection());
+        // userExpression
 
         appendBaseFromAndJoin(query);
         appendBaseWhere(query);
         appendQueryRange(query);
 
-        query.orderBy(userExpression.asc());
-
-        query.groupBy(createQueryGroupBy());
-
+        // query.orderBy(userExpression.asc());
+        //
+        // query.groupBy(createQueryGroupBy());
+        query.groupBy(QueryUtil.selectDisplayNameForWorklogAuthor(qWorklog.author));
         return query.fetch();
       }
     };

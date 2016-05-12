@@ -130,9 +130,9 @@ public abstract class AbstractReportQuery<T> {
         .join(qIssuetype).on(qIssue.issuetype.eq(qIssuetype.id))
         .join(qIssuestatus).on(qIssue.issuestatus.eq(qIssuestatus.id))
         .join(qPriority).on(qIssue.priority.eq(qPriority.id))
-        .leftJoin(qResolution).on(qIssue.resolution.eq(qResolution.id))
-        .leftJoin(qAppUser).on(qAppUser.userKey.eq(qWorklog.author))
-        .leftJoin(qCwdUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName));
+        .leftJoin(qResolution).on(qIssue.resolution.eq(qResolution.id));
+    // .leftJoin(qAppUser).on(qAppUser.userKey.eq(qWorklog.author))
+    // .leftJoin(qCwdUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName));
   }
 
   /**
@@ -588,6 +588,7 @@ public abstract class AbstractReportQuery<T> {
           SQLExpressions.select(qAppUser.userKey)
               .from(qAppUser)
               .where(qAppUser.lowerUserName.in(reportSearchParam.users))));
+      // .groupBy(qAppUser.lowerUserName)
     }
     return where;
   }

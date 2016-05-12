@@ -62,7 +62,7 @@ public class WorklogDetailsReportQueryBuilder extends AbstractReportQuery<Worklo
   }
 
   private QBean<WorklogDetailsDTO> createQuerySelectProjection(final StringExpression issueKey) {
-    StringExpression userExpression = QueryUtil.createUserExpression(qCwdUser, qWorklog);
+    // StringExpression userExpression = QueryUtil.createUserExpression(qCwdUser, qWorklog);
     return Projections.bean(WorklogDetailsDTO.class,
         qProject.pname.as(WorklogDetailsDTO.AliasNames.PROJECT_NAME),
         qProject.pkey.as(WorklogDetailsDTO.AliasNames.PROJECT_KEY),
@@ -72,7 +72,7 @@ public class WorklogDetailsReportQueryBuilder extends AbstractReportQuery<Worklo
         qIssuetype.pname.as(WorklogDetailsDTO.AliasNames.ISSUE_TYPE_NAME),
         qIssuetype.iconurl.as(WorklogDetailsDTO.AliasNames.ISSUE_TYPE_ICON_URL),
         qIssuestatus.pname.as(WorklogDetailsDTO.AliasNames.ISSUE_STATUS_P_NAME),
-        QueryUtil.selectDisplayName(qIssue.assignee)
+        QueryUtil.selectDisplayNameForIssueUser(qIssue.assignee)
             .as(WorklogDetailsDTO.AliasNames.ISSUE_ASSIGNEE),
         qIssue.timeoriginalestimate.as(WorklogDetailsDTO.AliasNames.ISSUE_TIME_ORIGINAL_ESTIMATE),
         qIssue.timeestimate.as(WorklogDetailsDTO.AliasNames.ISSUE_TIME_ESTIMATE),
@@ -81,7 +81,7 @@ public class WorklogDetailsReportQueryBuilder extends AbstractReportQuery<Worklo
         qProject.description.as(WorklogDetailsDTO.AliasNames.PROJECT_DESCRIPTION),
         qPriority.pname.as(WorklogDetailsDTO.AliasNames.PRIORITY_NAME),
         qPriority.iconurl.as(WorklogDetailsDTO.AliasNames.PRIORITY_ICON_URL),
-        QueryUtil.selectDisplayName(qIssue.reporter)
+        QueryUtil.selectDisplayNameForIssueUser(qIssue.reporter)
             .as(WorklogDetailsDTO.AliasNames.ISSUE_REPORTER),
         qIssue.created.as(WorklogDetailsDTO.AliasNames.ISSUE_CREATED),
         qIssue.updated.as(WorklogDetailsDTO.AliasNames.ISSUE_UPDATED),
@@ -89,7 +89,9 @@ public class WorklogDetailsReportQueryBuilder extends AbstractReportQuery<Worklo
         qWorklog.startdate.as(WorklogDetailsDTO.AliasNames.WORKLOG_START_DATE),
         qWorklog.created.as(WorklogDetailsDTO.AliasNames.WORKLOG_CREATED),
         qWorklog.updated.as(WorklogDetailsDTO.AliasNames.WORKLOG_UPDATED),
-        userExpression.as(WorklogDetailsDTO.AliasNames.WORKLOG_USER));
+        QueryUtil.selectDisplayNameForWorklogAuthor(qWorklog.author)
+            .as(WorklogDetailsDTO.AliasNames.WORKLOG_USER));
+    // userExpression.as(WorklogDetailsDTO.AliasNames.WORKLOG_USER));
   }
 
   private void extendResult(final Connection connection, final Configuration configuration,
@@ -168,7 +170,6 @@ public class WorklogDetailsReportQueryBuilder extends AbstractReportQuery<Worklo
         appendBaseWhere(query);
         appendQueryRange(query);
         query.orderBy(issueKey.asc(), qWorklog.startdate.asc());
-
         List<WorklogDetailsDTO> result = query.fetch();
 
         extendResult(connection, configuration, result);
