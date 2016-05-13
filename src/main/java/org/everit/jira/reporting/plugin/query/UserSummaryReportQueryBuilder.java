@@ -28,6 +28,7 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.sql.Configuration;
@@ -41,18 +42,13 @@ public class UserSummaryReportQueryBuilder extends AbstractReportQuery<UserSumma
   public UserSummaryReportQueryBuilder(final ReportSearchParam reportSearchParam) {
     super(reportSearchParam);
   }
-  //
-  // private Expression<?>[] createQueryGroupBy() {
-  // return new Expression<?>[] { qCwdUser.displayName,
-  // qWorklog.author };
-  // }
 
   private QBean<UserSummaryDTO> createQuerySelectProjection() {
-    // final StringExpression userExpression
     return Projections.bean(UserSummaryDTO.class,
-        QueryUtil.selectDisplayNameForWorklogAuthor(qWorklog.author)
-            .as(UserSummaryDTO.AliasNames.USER_DISPLAY_NAME),
-        // userExpression.as(UserSummaryDTO.AliasNames.USER_DISPLAY_NAME),
+        // QueryUtil.selectDisplayNameForUser(qWorklog.author)
+        new CaseBuilder()
+            .when(qCwdUser.displayName.isNotNull()).then(qCwdUser.displayName)
+            .otherwise(qWorklog.author).as(UserSummaryDTO.AliasNames.USER_DISPLAY_NAME),
         qWorklog.timeworked.sum().as(UserSummaryDTO.AliasNames.WORKLOGGED_TIME_SUM));
   }
 
@@ -88,20 +84,15 @@ public class UserSummaryReportQueryBuilder extends AbstractReportQuery<UserSumma
       @Override
       public List<UserSummaryDTO> call(final Connection connection,
           final Configuration configuration) throws SQLException {
-        // StringExpression userExpression = QueryUtil.createUserExpression(qCwdUser, qWorklog);
 
         SQLQuery<UserSummaryDTO> query = new SQLQuery<UserSummaryDTO>(connection, configuration)
             .select(createQuerySelectProjection());
-        // userExpression
 
         appendBaseFromAndJoin(query);
         appendBaseWhere(query);
         appendQueryRange(query);
 
-        // query.orderBy(userExpression.asc());
-        //
-        // query.groupBy(createQueryGroupBy());
-        query.groupBy(QueryUtil.selectDisplayNameForWorklogAuthor(qWorklog.author));
+        query.groupBy(QueryUtil.selectDisplayNameForUser(qWorklog.author));
         return query.fetch();
       }
     };

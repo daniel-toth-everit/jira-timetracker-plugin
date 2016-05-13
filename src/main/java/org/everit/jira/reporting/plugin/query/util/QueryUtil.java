@@ -41,62 +41,25 @@ public final class QueryUtil {
     return issueKey;
   }
 
-  // /**
-  // * Create user StringExpression. In SQL return worklog.author if cwd_user.displayname is null
-  // * otherwise cwd_user.displayname.
-  // */
-  // public static StringExpression createUserExpression(final QCwdUser qCwdUser,
-  // final QWorklog qWorklog) {
-  // StringExpression userExpression = new CaseBuilder()
-  // .when(qCwdUser.displayName.isNull()).then(qWorklog.author)
-  // .otherwise(qCwdUser.displayName);
-  // return userExpression;
-  // }
-
   /**
-   * Select user displayName for issue assigne or report user.
+   * Select user displayName for user.
    *
    * @param stringPath
-   *          The StringPath of the issue para,
+   *          The StringPath of the checked user parameter.
    */
-  public static SQLQuery<String> selectDisplayNameForIssueUser(final StringPath stringPath) {
+  public static SQLQuery<String> selectDisplayNameForUser(final StringPath stringPath) {
     QCwdUser qCwdUser = new QCwdUser("issueUser");
     QAppUser qAppUser = new QAppUser("appUserForIssue");
     QCwdDirectory qCwdDirectory = new QCwdDirectory("cwdDirectoryForIssue");
-    // join cwd_directory dir on dir.id = usr.directory_id
     return SQLExpressions.select(new CaseBuilder()
         .when(qCwdUser.displayName.isNotNull()).then(qCwdUser.displayName)
         .otherwise(stringPath))
-        .from(qCwdUser)
-        .leftJoin(qAppUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName))
+        .from(qAppUser)
+        .leftJoin(qCwdUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName))
         .leftJoin(qCwdDirectory).on(qCwdUser.directoryId.eq(qCwdDirectory.id))
         .where(qAppUser.userKey.eq(stringPath))
         .orderBy(qCwdDirectory.directoryPosition.asc())
         .limit(1L);
-    // .and(qCwdDirectory.directoryPosition.eq(qCwdDirectory.directoryPosition.max()))
-  }
-
-  /**
-   * TODO Select user displayName for issue assigne or report user.
-   *
-   * @param stringPath
-   *          The StringPath of the issue para,
-   */
-  public static SQLQuery<String> selectDisplayNameForWorklogAuthor(final StringPath stringPath) {
-    QCwdUser qCwdUser = new QCwdUser("issueUser");
-    QAppUser qAppUser = new QAppUser("appUserForIssue");
-    QCwdDirectory qCwdDirectory = new QCwdDirectory("cwdDirectoryForIssue");
-    // join cwd_directory dir on dir.id = usr.directory_id
-    return SQLExpressions.select(new CaseBuilder()
-        .when(qCwdUser.displayName.isNotNull()).then(qCwdUser.displayName)
-        .otherwise(stringPath))
-        .from(qCwdUser)
-        .leftJoin(qAppUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName))
-        .leftJoin(qCwdDirectory).on(qCwdUser.directoryId.eq(qCwdDirectory.id))
-        .where(qAppUser.userKey.eq(stringPath))
-        .orderBy(qCwdDirectory.directoryPosition.asc())
-        .limit(1L);
-    // .and(qCwdDirectory.directoryPosition.eq(qCwdDirectory.directoryPosition.max()))
   }
 
   private QueryUtil() {

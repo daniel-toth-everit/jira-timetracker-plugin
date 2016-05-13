@@ -28,6 +28,7 @@ import org.everit.jira.querydsl.schema.QAppUser;
 import org.everit.jira.querydsl.schema.QComponent;
 import org.everit.jira.querydsl.schema.QCustomfield;
 import org.everit.jira.querydsl.schema.QCustomfieldvalue;
+import org.everit.jira.querydsl.schema.QCwdDirectory;
 import org.everit.jira.querydsl.schema.QCwdUser;
 import org.everit.jira.querydsl.schema.QIssuelink;
 import org.everit.jira.querydsl.schema.QIssuelinktype;
@@ -130,9 +131,10 @@ public abstract class AbstractReportQuery<T> {
         .join(qIssuetype).on(qIssue.issuetype.eq(qIssuetype.id))
         .join(qIssuestatus).on(qIssue.issuestatus.eq(qIssuestatus.id))
         .join(qPriority).on(qIssue.priority.eq(qPriority.id))
-        .leftJoin(qResolution).on(qIssue.resolution.eq(qResolution.id));
-    // .leftJoin(qAppUser).on(qAppUser.userKey.eq(qWorklog.author))
-    // .leftJoin(qCwdUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName));
+        .leftJoin(qResolution).on(qIssue.resolution.eq(qResolution.id))
+        .leftJoin(qAppUser).on(qAppUser.userKey.eq(qWorklog.author))
+        .leftJoin(qCwdUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName));
+
   }
 
   /**
@@ -143,6 +145,11 @@ public abstract class AbstractReportQuery<T> {
    */
   protected void appendBaseWhere(final SQLQuery<?> query) {
     BooleanExpression where = expressionTrue;
+    QCwdDirectory qCwdDirectory = new QCwdDirectory("cwd_directory");
+    where.and(qCwdUser.directoryId.eq(SQLExpressions.select(qCwdDirectory.id)
+        .from(qCwdDirectory)
+        .orderBy(qCwdDirectory.directoryPosition.asc())
+        .limit(1L)));
     where = filterToProjectIds(qProject, where);
     where = filterToIssueTypeIds(qIssuetype, where);
     where = filterToIssueIds(qIssue, where);
@@ -588,7 +595,6 @@ public abstract class AbstractReportQuery<T> {
           SQLExpressions.select(qAppUser.userKey)
               .from(qAppUser)
               .where(qAppUser.lowerUserName.in(reportSearchParam.users))));
-      // .groupBy(qAppUser.lowerUserName)
     }
     return where;
   }
