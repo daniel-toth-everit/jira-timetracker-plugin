@@ -21,6 +21,7 @@ import org.everit.jira.querydsl.schema.QCwdUser;
 import org.everit.jira.querydsl.schema.QJiraissue;
 import org.everit.jira.querydsl.schema.QProject;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.StringPath;
@@ -60,6 +61,24 @@ public final class QueryUtil {
         .where(qAppUser.userKey.eq(stringPath))
         .orderBy(qCwdDirectory.directoryPosition.asc())
         .limit(1L);
+  }
+
+  /**
+   * Select user displayName for user.
+   *
+   * @param stringPath
+   *          The StringPath of the checked user parameter.
+   */
+  public static BooleanExpression selectDisplayNameForUserExist(final StringPath stringPath) {
+    QCwdUser qCwdUser = new QCwdUser("cwdUserExists");
+    QAppUser qAppUser = new QAppUser("appUserExists");
+    QCwdDirectory qCwdDirectory = new QCwdDirectory("cwdDirectoryExists");
+    return SQLExpressions.select(qCwdUser.displayName)
+        .from(qAppUser)
+        .leftJoin(qCwdUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName))
+        .leftJoin(qCwdDirectory).on(qCwdUser.directoryId.eq(qCwdDirectory.id))
+        .where(qAppUser.userKey.eq(stringPath))
+        .exists();
   }
 
   private QueryUtil() {

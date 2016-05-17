@@ -28,7 +28,6 @@ import org.everit.jira.querydsl.schema.QAppUser;
 import org.everit.jira.querydsl.schema.QComponent;
 import org.everit.jira.querydsl.schema.QCustomfield;
 import org.everit.jira.querydsl.schema.QCustomfieldvalue;
-import org.everit.jira.querydsl.schema.QCwdDirectory;
 import org.everit.jira.querydsl.schema.QCwdUser;
 import org.everit.jira.querydsl.schema.QIssuelink;
 import org.everit.jira.querydsl.schema.QIssuelinktype;
@@ -131,9 +130,9 @@ public abstract class AbstractReportQuery<T> {
         .join(qIssuetype).on(qIssue.issuetype.eq(qIssuetype.id))
         .join(qIssuestatus).on(qIssue.issuestatus.eq(qIssuestatus.id))
         .join(qPriority).on(qIssue.priority.eq(qPriority.id))
-        .leftJoin(qResolution).on(qIssue.resolution.eq(qResolution.id))
-        .leftJoin(qAppUser).on(qAppUser.userKey.eq(qWorklog.author))
-        .leftJoin(qCwdUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName));
+        .leftJoin(qResolution).on(qIssue.resolution.eq(qResolution.id));
+    // .leftJoin(qAppUser).on(qAppUser.userKey.eq(qWorklog.author))
+    // .leftJoin(qCwdUser).on(qCwdUser.lowerUserName.eq(qAppUser.lowerUserName));
 
   }
 
@@ -145,11 +144,16 @@ public abstract class AbstractReportQuery<T> {
    */
   protected void appendBaseWhere(final SQLQuery<?> query) {
     BooleanExpression where = expressionTrue;
-    QCwdDirectory qCwdDirectory = new QCwdDirectory("cwd_directory");
-    where.and(qCwdUser.directoryId.eq(SQLExpressions.select(qCwdDirectory.id)
-        .from(qCwdDirectory)
-        .orderBy(qCwdDirectory.directoryPosition.asc())
-        .limit(1L)));
+    // QCwdDirectory qCwdDirectory = new QCwdDirectory("cwd_directory");
+    // QCwdUser qSubCwdUser = new QCwdUser("subUser");
+    // QAppUser qAppUser2 = new QAppUser("subAppUser");
+    // where = where.and(qCwdUser.directoryId.eq(SQLExpressions.select(qCwdDirectory.id)
+    // .from(qAppUser2)
+    // .leftJoin(qSubCwdUser).on(qSubCwdUser.lowerUserName.eq(qAppUser2.lowerUserName))
+    // .leftJoin(qCwdDirectory).on(qSubCwdUser.directoryId.eq(qCwdDirectory.id))
+    // .where(qAppUser2.userKey.eq(qAppUser.userKey))
+    // .orderBy(qCwdDirectory.directoryPosition.asc())
+    // .limit(1L)));
     where = filterToProjectIds(qProject, where);
     where = filterToIssueTypeIds(qIssuetype, where);
     where = filterToIssueIds(qIssue, where);

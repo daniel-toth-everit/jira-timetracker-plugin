@@ -22,13 +22,12 @@ import java.util.List;
 import org.everit.jira.querydsl.support.QuerydslCallable;
 import org.everit.jira.reporting.plugin.dto.ReportSearchParam;
 import org.everit.jira.reporting.plugin.dto.UserSummaryDTO;
-import org.everit.jira.reporting.plugin.query.util.QueryUtil;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.sql.Configuration;
@@ -43,12 +42,20 @@ public class UserSummaryReportQueryBuilder extends AbstractReportQuery<UserSumma
     super(reportSearchParam);
   }
 
+  private Expression<?>[] createQueryGroupBy() {
+    return new Expression<?>[] {
+        qWorklog.author
+    };
+  }
+
   private QBean<UserSummaryDTO> createQuerySelectProjection() {
     return Projections.bean(UserSummaryDTO.class,
         // QueryUtil.selectDisplayNameForUser(qWorklog.author)
-        new CaseBuilder()
-            .when(qCwdUser.displayName.isNotNull()).then(qCwdUser.displayName)
-            .otherwise(qWorklog.author).as(UserSummaryDTO.AliasNames.USER_DISPLAY_NAME),
+        // new CaseBuilder()
+        // .when(QueryUtil.selectDisplayNameForUserExist(qWorklog.author))
+        // .then(QueryUtil.selectDisplayNameForUser(qWorklog.author))
+        // .otherwise(qWorklog.author).as(UserSummaryDTO.AliasNames.USER_DISPLAY_NAME),
+        qWorklog.author.as(UserSummaryDTO.AliasNames.USER_DISPLAY_NAME),
         qWorklog.timeworked.sum().as(UserSummaryDTO.AliasNames.WORKLOGGED_TIME_SUM));
   }
 
@@ -92,7 +99,7 @@ public class UserSummaryReportQueryBuilder extends AbstractReportQuery<UserSumma
         appendBaseWhere(query);
         appendQueryRange(query);
 
-        query.groupBy(QueryUtil.selectDisplayNameForUser(qWorklog.author));
+        query.groupBy(createQueryGroupBy());
         return query.fetch();
       }
     };
