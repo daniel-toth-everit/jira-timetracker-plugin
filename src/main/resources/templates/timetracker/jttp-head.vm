@@ -33,11 +33,11 @@
                  #end
                  </div>
                  <div class="aui-item">
-                   <form class="aui top-label" id="jttp-datecahnge-form" method="get" action="JiraTimetrackerWebAction.jspa" onsubmit="return everit.jttp.main.beforeSubmitChangeDate();">
-                     <div class="buttons-container" id="jttp-headline-day-stepper-container">
-                       <button id="jttp-headline-day-calendar" class="aui-button" title="Pick a date">
-                         <span class="aui-icon aui-icon-small aui-iconfont-calendar">Open calendar</span>
-                       </button>
+                   <div class="buttons-container" id="jttp-headline-day-stepper-container">
+                     <button id="jttp-headline-day-calendar" type="button" class="aui-button" value="${dateFormatted}" title="Pick a date" onchange="return everit.jttp.main.copySelectedDate();" >
+                       <span class="aui-icon aui-icon-small aui-iconfont-calendar">Open calendar</span>
+                     </button>
+                     <form class="aui top-label" id="jttp-datecahnge-form" method="get" action="JiraTimetrackerWebAction.jspa" onsubmit="return everit.jttp.main.beforeSubmitChangeDate();">
                        <div class="aui-buttons stepper-group-container">
                          <button id="jttp-headline-day-prev" class="aui-button" title="Previous day" type="submit" id="dayBack"  name="dayBack" >
                            <span class="aui-icon aui-icon-small aui-iconfont-arrows-left">Previous day</span>
@@ -49,10 +49,10 @@
                            <span class="aui-icon aui-icon-small aui-iconfont-arrows-right">Next day</span>
                          </button>>
                        </div>
-                       <input type="text" id="dateHidden" name="dateHidden" style="display: none" onchange="this.form.datesubmit.click()" />
+                       <input type="text" id="dateHidden" class="aui-date-picker" name="dateHidden" value="${dateFormatted}" style="display: none" onchange="this.form.datesubmit.click()" />
                        <input type="submit" id="datesubmit" name="datesubmit" class="spaced" style="display: none"/>
-                     </div>
-                   </form>
+                     </form>
+                   </div>
                  </div>
               </div>
             </div>

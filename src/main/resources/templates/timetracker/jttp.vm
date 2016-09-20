@@ -44,7 +44,6 @@ $webResourceManager.requireResource("org.everit.jira.timetracker.plugin:jttp-res
 			{
 				firstDay : ${firstDay},
 				useISO8601 : ${currentCalendar.useISO8601},
-				dateFormatted : ${dateFormatted},
 				excludeDays : ${excludeDays},
 				isColoring : ${isColoring},
 				loggedDays : ${loggedDays},

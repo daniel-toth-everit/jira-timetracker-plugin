@@ -51,6 +51,7 @@ import com.atlassian.jira.bc.issue.worklog.TimeTrackingConfiguration;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.properties.APKeys;
 import com.atlassian.jira.config.properties.ApplicationProperties;
+import com.atlassian.jira.datetime.DateTimeFormatterFactory;
 import com.atlassian.jira.exception.DataAccessException;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.RendererManager;
@@ -131,7 +132,9 @@ public class JiraTimetrackerWebAction extends JiraWebActionSupport {
   /**
    * The formated date.
    */
-  private Long dateFormatted;
+  private String dateFormatted;
+
+  private DateTimeFormatterFactory dateTimeFormatterFactory;
 
   /**
    * The summary of day.
@@ -312,6 +315,7 @@ public class JiraTimetrackerWebAction extends JiraWebActionSupport {
     issueRenderContext = new IssueRenderContext(null);
     RendererManager rendererManager = ComponentAccessor.getRendererManager();
     atlassianWikiRenderer = rendererManager.getRendererForType("atlassian-wiki-renderer");
+    dateTimeFormatterFactory = ComponentAccessor.getComponent(DateTimeFormatterFactory.class);
   }
 
   private String checkConditions() {
@@ -403,15 +407,13 @@ public class JiraTimetrackerWebAction extends JiraWebActionSupport {
     if (dayNextValue != null) {
       tempCal.add(Calendar.DAY_OF_YEAR, 1);
       date = tempCal.getTime();
-      dateFormatted = date.getTime();
     } else if (dayBackValue != null) {
       tempCal.add(Calendar.DAY_OF_YEAR, -1);
       date = tempCal.getTime();
-      dateFormatted = date.getTime();
     } else if (todayValue != null) {
       date = new Date();
-      dateFormatted = date.getTime();
     }
+    dateFormatted = DateTimeConverterUtil.dateToString(date);
   }
 
   private String deleteWorklog() {
@@ -435,7 +437,15 @@ public class JiraTimetrackerWebAction extends JiraWebActionSupport {
     if (checkConditionsResult != null) {
       return checkConditionsResult;
     }
-
+    //
+    // DateTimeFormatter withStyle = dateTimeFormatterFactory.formatter()
+    // .withLocale(getLocale())
+    // .withStyle(DateTimeStyle.DATE).getFormatHint();
+    // withStyle.getFormatHint();
+    //
+    // DateTimeFormatter withStyle = dateTimeFormatterFactory.formatter()
+    // .withLocale(getLocale())
+    // .withStyle(DateTimeStyle.DATE).getFormatHint();
     analyticsDTO = JiraTimetrackerAnalytics.getAnalyticsDTO(pluginSettingsFactory,
         PiwikPropertiesUtil.PIWIK_TIMETRACKER_SITEID);
 
@@ -624,7 +634,7 @@ public class JiraTimetrackerWebAction extends JiraWebActionSupport {
     return (Date) date.clone();
   }
 
-  public Long getDateFormatted() {
+  public String getDateFormatted() {
     return dateFormatted;
   }
 
@@ -1042,8 +1052,8 @@ public class JiraTimetrackerWebAction extends JiraWebActionSupport {
   private void parseDateParam() throws ParseException {
     String dateFromParam = getHttpRequest().getParameter(PARAM_DATE);
     if ((dateFromParam != null) && !"".equals(dateFromParam)) {
-      dateFormatted = Long.valueOf(dateFromParam);
-      date = new Date(dateFormatted);
+      dateFormatted = dateFromParam;
+      date = DateTimeConverterUtil.stringToDate(dateFromParam);
     } else {
       date = new Date();
     }
@@ -1154,29 +1164,29 @@ public class JiraTimetrackerWebAction extends JiraWebActionSupport {
     this.date = (Date) date.clone();
   }
 
-  private String setDateAndDateFormatted() {
+  private String setDateAndDateFormatted() throws ParseException {
     String dateFromParam = getHttpRequest().getParameter(PARAM_DATE);
     if ((dateFromParam == null) || "".equals(dateFromParam)) {
       if (isActualDate) {
         date = Calendar.getInstance().getTime();
-        dateFormatted = date.getTime();
+        dateFormatted = DateTimeConverterUtil.dateToString(date);
       } else {
         try {
           date = jiraTimetrackerPlugin.firstMissingWorklogsDate();
-          dateFormatted = date.getTime();
+          dateFormatted = DateTimeConverterUtil.dateToString(date);
         } catch (GenericEntityException e) {
           LOGGER.error("Error when try set the plugin date.", e);
           return ERROR;
         }
       }
     } else {
-      dateFormatted = Long.valueOf(dateFromParam);
-      date = new Date(dateFormatted);
+      dateFormatted = dateFromParam;
+      date = DateTimeConverterUtil.stringToDate(dateFromParam);
     }
     return SUCCESS;
   }
 
-  public void setDateFormatted(final Long dateFormatted) {
+  public void setDateFormatted(final String dateFormatted) {
     this.dateFormatted = dateFormatted;
   }
 

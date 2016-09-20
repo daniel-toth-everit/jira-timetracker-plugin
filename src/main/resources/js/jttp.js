@@ -20,30 +20,30 @@ everit.jttp.main = everit.jttp.main || {};
 
 (function(jttp, jQuery) {
   
-  Calendar.prototype.parseDate = function(str, fmt) {
-    this.setDate(fecha.parse(str, AJS.Meta.get("date-dmy").toUpperCase()));
-  };
-  Date.parseDate = function(str, fmt){
-    return fecha.parse(str, AJS.Meta.get("date-dmy").toUpperCase());
-  };
-  
-  Date.prototype.format = function (formatString) {
-    return fecha.format(this, formatString);
-  };
+//  Calendar.prototype.parseDate = function(str, fmt) {
+//    this.setDate(fecha.parse(str, AJS.Meta.get("date-dmy").toUpperCase()));
+//  };
+//  Date.parseDate = function(str, fmt){
+//    return fecha.parse(str, AJS.Meta.get("date-dmy").toUpperCase());
+//  };
+//  
+//  Date.prototype.format = function (formatString) {
+//    return fecha.format(this, formatString);
+//  };
   
   jQuery(document).ready(function() {
     
-    fecha.i18n = {
-        dayNamesShort: Calendar._SDN,
-        dayNames: Calendar._DN,
-        monthNamesShort: Calendar._SMN,
-        monthNames: Calendar._MN,
-        amPm: ['am', 'pm'],
-        // D is the day of the month, function returns something like...  3rd or 11th
-        DoFn: function (D) {
-            return D + [ 'th', 'st', 'nd', 'rd' ][ D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10 ];
-        }
-    }
+//    fecha.i18n = {
+//        dayNamesShort: Calendar._SDN,
+//        dayNames: Calendar._DN,
+//        monthNamesShort: Calendar._SMN,
+//        monthNames: Calendar._MN,
+//        amPm: ['am', 'pm'],
+//        // D is the day of the month, function returns something like...  3rd or 11th
+//        DoFn: function (D) {
+//            return D + [ 'th', 'st', 'nd', 'rd' ][ D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10 ];
+//        }
+//    }
     
     document.getElementById("startTime").focus();
     jQuery('.aui-ss-editing').attr("style", "width: 250px;");
@@ -53,9 +53,10 @@ everit.jttp.main = everit.jttp.main || {};
     issuePickerSetup();
     eventBinding();
     commentsCSSFormat();
-    var fechaFormatedDate = fecha.format(jttp.options.dateFormatted, AJS.Meta.get("date-dmy").toUpperCase());
-    jQuery("#date-span").text(fechaFormatedDate);
-    jQuery("#dateHidden").val(fechaFormatedDate);
+    
+    //var fechaFormatedDate = fecha.format(jttp.options.dateFormatted, AJS.Meta.get("date-dmy").toUpperCase());
+    //jQuery("#date-span").text(fechaFormatedDate);
+    //jQuery("#dateHidden").val(fechaFormatedDate);
     
    
     popupCalendarsSetup();
@@ -175,9 +176,10 @@ everit.jttp.main = everit.jttp.main || {};
   
   jttp.beforeSubmit = function() {
     var dateHidden = jQuery('#dateHidden').val();
-    var dateInMil = fecha.parse(dateHidden,  AJS.Meta.get("date-dmy").toUpperCase());
+//    var dateInMil = fecha.parse(dateHidden,  AJS.Meta.get("date-dmy").toUpperCase());
     var date = jQuery('#date');
-    date.val(dateInMil.getTime());
+//    date.val(dateInMil.getTime());
+    date.val(dateHidden);
     
     var worklogValues = getWorklogValuesJson();
     var json = JSON.stringify(worklogValues);
@@ -186,7 +188,13 @@ everit.jttp.main = everit.jttp.main || {};
     
     return true;
   }
-    
+
+  jttp.copySelectedDate = function() {
+    var selectedDate = jQuery('#jttp-headline-day-calendar').val();
+    jQuery('#dateHidden').val(selectedDate);
+    return true;
+  }
+
   jttp.setActionFlag = function(flag, id) {
     var actionFlag = jQuery('.actionFlag_'+id);
     actionFlag.val(flag);
@@ -199,9 +207,10 @@ everit.jttp.main = everit.jttp.main || {};
   
   jttp.beforeSubmitEditAll = function(){
     var dateHidden = jQuery('#dateHidden').val();
-    var dateInMil = fecha.parse(dateHidden,  AJS.Meta.get("date-dmy").toUpperCase());
+//    var dateInMil = fecha.parse(dateHidden,  AJS.Meta.get("date-dmy").toUpperCase());
     var date = jQuery('#date');
-    date.val(dateInMil.getTime());
+//    date.val(dateInMil.getTime());
+    date.val(dateHidden);
     jQuery("#jttp-editall-form").append(date);
     
     return true;
@@ -209,9 +218,10 @@ everit.jttp.main = everit.jttp.main || {};
   
   jttp.beforeSubmitAction = function(id) {
     var dateHidden = jQuery('#dateHidden').val();
-    var dateInMil = fecha.parse(dateHidden,  AJS.Meta.get("date-dmy").toUpperCase());
+//    var dateInMil = fecha.parse(dateHidden,  AJS.Meta.get("date-dmy").toUpperCase());
     var date = jQuery('#date');
-    date.val(dateInMil.getTime());
+//    date.val(dateInMil.getTime());
+    date.val(dateHidden);
     jQuery(".actionForm_"+id).append(date);
     
     return true;
@@ -225,9 +235,10 @@ everit.jttp.main = everit.jttp.main || {};
  
   jttp.beforeSubmitChangeDate = function() {
     var dateHidden = jQuery('#dateHidden').val();
-    var dateInMil = fecha.parse(dateHidden,  AJS.Meta.get("date-dmy").toUpperCase());
+//    var dateInMil = fecha.parse(dateHidden,  AJS.Meta.get("date-dmy").toUpperCase());
     var date = jQuery('#date');
-    date.val(dateInMil.getTime());
+//    date.val(dateInMil.getTime());
+    date.val(dateHidden);
     jQuery("#jttp-datecahnge-form").append(date);
     
     var worklogValues = getWorklogValuesJson();
@@ -416,24 +427,31 @@ everit.jttp.main = everit.jttp.main || {};
   }
   
   function popupCalendarsSetup() {
-    var original = Calendar.prototype.show;
-    Calendar.prototype.show = function() {
-      original.call(this);
-      setExcludeDaysToWeekend(jttp.options.excludeDays);
-      setLoggedDaysDesign(jttp.options.isColoring, jttp.options.loggedDays);
-    }
-      var calPop = Calendar.setup({
-        firstDay : jttp.options.firstDay,
-        inputField : jQuery("#dateHidden"),
-        button : jQuery("#jttp-headline-day-calendar"),
-        date : jttp.options.dateFormatted,
-        align : 'Br',
-        electric : false,
-        singleClick : true,
-        showOthers : true,
-        useISO8601WeekNumbers : jttp.options.useISO8601,
-        onSelect: jttp.onSelect
-      });
+   
+//      var calPop = Calendar.setup({
+//        firstDay : jttp.options.firstDay,
+//        inputField : jQuery("#dateHidden"),
+//        button : jQuery("#jttp-headline-day-calendar"),
+//        date : jttp.options.dateFormatted,
+//        align : 'Br',
+//        electric : false,
+//        singleClick : true,
+//        showOthers : true,
+//        useISO8601WeekNumbers : jttp.options.useISO8601,
+//        onSelect: jttp.onSelect
+//      });
+     var jttpDatePicker = jQuery('#jttp-headline-day-calendar').datePicker({
+        'overrideBrowserDefault': true,
+        'dateFormat': AJS.Meta.get("date-dmy"),
+        'firstDay' : jttp.options.firstDay
+     });
+     var original = jttpDatePicker.show;
+     jttpDatePicker.show = function() {
+       original.call(this);
+       setExcludeDaysToWeekend(jttp.options.excludeDays);
+       setLoggedDaysDesign(jttp.options.isColoring, jttp.options.loggedDays);
+     }
+    
   }
   
   jttp.toggleSummary = function() {
@@ -490,12 +508,13 @@ everit.jttp.main = everit.jttp.main || {};
       var dayNumber = loggedDays.length;
       for (var i = 0; i < dayNumber; i++) {
         var theDay = loggedDays[i];
-        var calendarDays = jQuery('.day.day-' + theDay);
+        var calendarDays = jQuery('.ui-state-default');
         for (var j = 0; j < calendarDays.length; j++) {
-          if (!(jQuery(calendarDays[j]).hasClass('selected')
-              || jQuery(calendarDays[j]).hasClass('othermonth') || jQuery(calendarDays[j])
-              .hasClass('logged'))) {
-            calendarDays[j].className += " logged";
+          if (jQuery(calendarDays[j]).html() == theDay && 
+              !(jQuery(calendarDays[j]).hasClass('ui-state-active')
+              //|| jQuery(calendarDays[j]).hasClass('othermonth') 
+              || jQuery(calendarDays[j]).hasClass('logged'))) {
+            jQuery(calendarDays[j]).addClass("logged");
           }
         }
       }
@@ -506,12 +525,13 @@ everit.jttp.main = everit.jttp.main || {};
     var dayNumber = excludeDays.length;
     for (var i = 0; i < dayNumber; i++) {
       var theDay = excludeDays[i];
-      var calendarDays = jQuery('.day.day-' + theDay);
+      var calendarDays = jQuery('.ui-state-default');
       for (var j = 0; j < calendarDays.length; j++) {
-        if (!(jQuery(calendarDays[j]).hasClass('selected')
-            || jQuery(calendarDays[j]).hasClass('othermonth') || jQuery(calendarDays[j]).hasClass(
-            'weekend'))) {
-          calendarDays[j].className += " weekend";
+        if (jQuery(calendarDays[j]).html() == theDay && 
+            !(jQuery(calendarDays[j]).hasClass('ui-state-active')
+           // || jQuery(calendarDays[j]).hasClass('othermonth') 
+            || jQuery(calendarDays[j]).parent().hasClass('ui-datepicker-week-end '))) {
+          jQuery(calendarDays[j]).parent().addClass('ui-datepicker-week-end ');
         }
       }
     }

@@ -193,6 +193,14 @@ div.jttp-headline-progress-date {
 
 /* --- */
 
+#jttp-datecahnge-form{
+  margin-top: 0px;
+}
+
+#jttp-headline-day-stepper-container{
+  display: inline-flex;
+}
+
 div.jttp-headline-date {  
     padding-top: 4px;
     /*font-weight: bold;*/
@@ -372,9 +380,9 @@ input[type="text"]:disabled{
     background:#D3D3D3!important;
     background-color:#D3D3D3!important;
 }
-.calendar tbody td.logged{
-    background-color: #FFFFC2;
-    font-weight: 500;
+
+.aui-datepicker-dialog .ui-datepicker .ui-datepicker-calendar td a.logged{
+  background-color: #FFFFC2;
 }
 .calendar tbody td.othermonth.oweekend{
     color: #ec8484;
