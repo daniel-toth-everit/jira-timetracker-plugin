@@ -1,5 +1,5 @@
 function getSurveyStartDateString() {
-  return "2016-10-07";
+  return "2016-11-04";
 }
 
 function getSurveyStartDate() {
