@@ -1,5 +1,5 @@
 function getSurveyStartDateString() {
-  return "2016-11-06";
+  return "2016-11-13";
 }
 
 function getSurveyStartDate() {
@@ -7,5 +7,5 @@ function getSurveyStartDate() {
 }
 
 function showSurvey(){
-	return false;
+	return true;
 }
