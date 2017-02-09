@@ -17,5 +17,5 @@ You can find documentation [here](https://confluence.everit.biz/display/TD/Timet
 
 [![Analytics](https://ga-beacon.appspot.com/UA-15041869-4/everit-org/jira-timetracker-plugin)](https://github.com/igrigorik/ga-beacon)
 
-asddeagfegasfasfasf
+asddeagfegasfasfasf ok a 23-as
 gyóóó teszt ... smart test ...a agian . and again tobbsoros comment teszt és sima resolve tets
