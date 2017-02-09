@@ -17,12 +17,20 @@ package org.everit.jira.timetracker.plugin;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.everit.jira.analytics.AnalyticsDTO;
+import org.everit.jira.settings.TimeTrackerSettingsHelper;
+import org.everit.jira.settings.dto.TimeTrackerGlobalSettings;
+import org.everit.jira.timetracker.plugin.util.HashUtil;
+import org.everit.jira.timetracker.plugin.util.PiwikPropertiesUtil;
+import org.everit.jira.timetracker.plugin.util.PropertiesUtil;
 
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.util.BuildUtilsInfo;
 
 /**
  * The Jira Timetracker plugin analytics class.
@@ -41,6 +49,33 @@ public final class JiraTimetrackerAnalytics {
   private static Logger log = Logger.getLogger(JiraTimetrackerAnalytics.class);
 
   private static final String USER_ID = "org.everit.jira.timetracker.plugin.user.id.hash";
+
+  /**
+   * Gets {@link AnalyticsDTO} that contains all required detail to collect usage.
+   *
+   * @param siteIdPropertyKey
+   *          the site id property key.
+   * @return the {@link AnalyticsDTO} object.
+   */
+  public static AnalyticsDTO getAnalyticsDTO(final String siteIdPropertyKey,
+      final TimeTrackerSettingsHelper settingsHelper) {
+    Properties jttpBuildProperties = PropertiesUtil.getJttpBuildProperties();
+
+    String piwikHost =
+        JiraTimetrackerAnalytics.getProperty(jttpBuildProperties, PiwikPropertiesUtil.PIWIK_HOST);
+    String siteId = JiraTimetrackerAnalytics.getProperty(jttpBuildProperties, siteIdPropertyKey);
+
+    TimeTrackerGlobalSettings loadGlobalSettings = settingsHelper.loadGlobalSettings();
+    return new AnalyticsDTO()
+        .analyticsCheck(loadGlobalSettings.getAnalyticsCheck())
+        .baseUrl(JiraTimetrackerAnalytics.getBaseUrl())
+        .installedPluginId(loadGlobalSettings.getPluginUUID())
+        .jiraVersion(JiraTimetrackerAnalytics.getJiraVersionFromBuildUtilsInfo())
+        .piwikHost(piwikHost)
+        .piwikSiteId(siteId)
+        .pluginVersion(JiraTimetrackerAnalytics.getPluginVersion())
+        .userId(JiraTimetrackerAnalytics.getUserId());
+  }
 
   /**
    * Get the base URL.
@@ -63,6 +98,15 @@ public final class JiraTimetrackerAnalytics {
   }
 
   /**
+   * Gets JIRA version.
+   */
+  public static String getJiraVersionFromBuildUtilsInfo() {
+    BuildUtilsInfo component = ComponentAccessor.getComponent(BuildUtilsInfo.class);
+    return component.getVersion();
+
+  }
+
+  /**
    * Get the version of the plugin.
    *
    * @return The version.
@@ -74,6 +118,11 @@ public final class JiraTimetrackerAnalytics {
     return pluginVersion;
   }
 
+  private static String getProperty(final Properties jttpBuildProperties, final String key) {
+    Object value = jttpBuildProperties.get(key);
+    return value != null ? (String) value : null;
+  }
+
   /**
    * Get the user ID.
    *
@@ -83,7 +132,7 @@ public final class JiraTimetrackerAnalytics {
     String userId;
     try {
       userId = HashUtil.encryptString(ComponentAccessor
-          .getJiraAuthenticationContext().getUser().getKey());
+          .getJiraAuthenticationContext().getLoggedInUser().getKey());
     } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
       log.error("Error when try to hash the user ID.", e);
       return ERROR_USER_ID_HASH;

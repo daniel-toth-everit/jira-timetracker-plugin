@@ -1,0 +1,76 @@
+#*
+ * Copyright (C) 2011 Everit Kft. (http://www.everit.org)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *               http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+         <div class="summary-container">
+            <div id="progressBars" class="aui-group aui-group-trio">
+               #if($issueRegexIsNotEmpty)
+				<div class="aui-item jttpTooltip">
+					<label class="progress-label" for="day-progress">Day: $summaryDTO.day.filteredSummary / $summaryDTO.day.summary</label>
+					<div id="day-progress" class="progress" style="height:8px; margin-bottom:0px;" data-jttp-percent="$summaryDTO.day.filteredPercent">
+						<div class="progress-bar" style="width: ${summaryDTO.day.filteredRealWorkIndicatorPrecent}%">                                        
+						</div>
+						<div class="progress-bar progress-bar-nowork" style="width: ${summaryDTO.day.filteredNonWorkIndicatorPrecent}%">                                        
+						</div>
+					</div>
+						<div class="jttpTooltiptext">$i18n.getText('plugin.progress.expected'): $summaryDTO.day.formattedExpectedWorkTime <br/> $i18n.getText('plugin.progress.total'): $summaryDTO.day.summary <br/>$i18n.getText('plugin.progress.realWork'): $summaryDTO.day.filteredSummary <br/>$i18n.getText('plugin.progress.nonWork'): $summaryDTO.day.formattedNonWorkTime</div>
+				</div>
+				<div class="aui-item jttpTooltip">
+					<label class="progress-label" for="week-progress">Week: $summaryDTO.week.filteredSummary / $summaryDTO.week.summary</label>
+					<div id="week-progress" class="progress" style="height:8px; margin-bottom:0px;" data-jttp-percent="$summaryDTO.week.filteredPercent">
+						<div class="progress-bar" style="width: ${summaryDTO.week.filteredRealWorkIndicatorPrecent}%">                                        
+						</div>
+						<div class="progress-bar progress-bar-nowork" style="width: ${summaryDTO.week.filteredNonWorkIndicatorPrecent}%">                                        
+						</div>
+					</div>
+						<div class="jttpTooltiptext">$i18n.getText('plugin.progress.expected'): $summaryDTO.week.formattedExpectedWorkTime <br/> $i18n.getText('plugin.progress.total'): $summaryDTO.week.summary <br/>$i18n.getText('plugin.progress.realWork'):$summaryDTO.week.filteredSummary <br/>$i18n.getText('plugin.progress.nonWork'): $summaryDTO.week.formattedNonWorkTime</div>
+				</div>
+				<div class="aui-item jttpTooltip">
+					<label class="progress-label" for="month-progress">Month: $summaryDTO.month.filteredSummary / $summaryDTO.month.summary</label>
+					<div id="month-progress" class="progress" style="height:8px; margin-bottom:0px;" data-jttp-percent="$summaryDTO.month.filteredPercent">
+						<div class="progress-bar" style="width: ${summaryDTO.month.filteredRealWorkIndicatorPrecent}%">                                        
+						</div>
+						<div class="progress-bar progress-bar-nowork" style="width: ${summaryDTO.month.filteredNonWorkIndicatorPrecent}%">                                        
+						</div>
+					</div>
+						<div class="jttpTooltiptext">$i18n.getText('plugin.progress.expected'): $summaryDTO.month.formattedExpectedWorkTime<br/> $i18n.getText('plugin.progress.total'): $summaryDTO.month.summary <br/>$i18n.getText('plugin.progress.realWork'): $summaryDTO.month.filteredSummary <br/>$i18n.getText('plugin.progress.nonWork'): $summaryDTO.month.formattedNonWorkTime</div>
+				</div>
+				#else
+				<div class="aui-item jttpTooltip">
+					<label class="progress-label" for="day-progress">Day: $summaryDTO.day.summary</label>
+					<div id="day-progress" class="progress" style="height:8px; margin-bottom:0px;" data-jttp-percent="$summaryDTO.day.filteredPercent">
+						<div class="progress-bar" style="width: ${summaryDTO.day.indicatorPrecent}%">                                        
+						</div>
+					</div>
+					<div class="jttpTooltiptext">$i18n.getText('plugin.progress.expected'): $summaryDTO.day.formattedExpectedWorkTime<br/> $i18n.getText('plugin.progress.total'): $summaryDTO.day.summary</div>
+				</div>
+				<div class="aui-item jttpTooltip">
+					<label class="progress-label" for="week-progress">Week: $summaryDTO.week.summary</label>
+					<div id="week-progress" class="progress" style="height:8px; margin-bottom:0px;" data-jttp-percent="$summaryDTO.week.filteredPercent">
+						<div class="progress-bar" style="width: ${summaryDTO.week.indicatorPrecent}%">                                        
+						</div>
+					</div>
+					<div class="jttpTooltiptext">$i18n.getText('plugin.progress.expected'): $summaryDTO.week.formattedExpectedWorkTime<br/> $i18n.getText('plugin.progress.total'): $summaryDTO.week.summary</div>
+				</div>
+				<div class="aui-item jttpTooltip">
+					<label class="progress-label" for="month-progress">Month: $summaryDTO.month.summary</label>
+					<div id="month-progress" class="progress" style="height:8px; margin-bottom:0px;" data-jttp-percent="$summaryDTO.month.filteredPercent">
+						<div class="progress-bar" style="width: ${summaryDTO.month.indicatorPrecent}%">                                        
+						</div>
+					</div>
+					<div class="jttpTooltiptext">$i18n.getText('plugin.progress.expected'): $summaryDTO.month.formattedExpectedWorkTime<br/> $i18n.getText('plugin.progress.total'): $summaryDTO.month.summary</div>
+				</div>
+				#end
+               </div>
+          </div>

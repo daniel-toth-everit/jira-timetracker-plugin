@@ -1,0 +1,53 @@
+#*
+ * Copyright (C) 2011 Everit Kft. (http://www.everit.org)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+<html>
+  <head>
+    <title>$i18n.getText("jttp.error.title")</title>
+  </head>
+  <body>
+    $webResourceManager.requireResourcesForContext("org.everit.jira.timetracker.plugin.jttp-resources")
+    <div class="aui-message aui-message-error" style="margin: 5px;">
+      <p class="title">
+        <strong>$i18n.getText("jttp.error.message.title")</strong>
+      </p>
+      <div>
+        <p>$i18n.getText("jttp.error.message.detials")</p>
+        #if(!$stacktrace.equals(''))
+        <p style="margin-top: 1.5rem;margin-bottom: 1.5rem;">
+          <b>$i18n.getText("jttp.error.message.technical.detials")</b>
+        </p>
+        <div id="reveal-text-content" class="aui-expander-content">
+          <blockquote>
+            <pre>$stacktrace</pre>
+          </blockquote>
+        </div>
+        <a id="reveal-text-trigger" data-replace-text="$i18n.getText("jttp.error.show.less")" 
+           data-replace-selector=".reveal-text-trigger-text" 
+           class="aui-expander-trigger aui-expander-reveal-text" 
+           aria-controls="reveal-text-content"
+           style="left: 5rem;">
+          <span class="reveal-text-trigger-text">$i18n.getText("jttp.error.show.more")</span>
+        </a>
+        <style>
+          #reveal-text-content {
+            min-height: 2em;
+          }
+        </style>
+        #end
+      </div>
+    </div>
+  </body>
+</html>

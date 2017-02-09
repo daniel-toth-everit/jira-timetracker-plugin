@@ -1,0 +1,118 @@
+#*
+ * Copyright (C) 2011 Everit Kft. (http://www.everit.org)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+                              <div id="tabs-issue-content">
+                                <table class="aui reporting-table">
+                                    <thead>
+                                        <tr>
+                                            <th>$i18n.getText("jtrp.report.is.col.jtrp_col_issue")</th>
+                                            <th>$i18n.getText("jtrp.report.is.col.jtrp_col_issueSummary")</th>
+                                            <th id='is_jtrp_col_type' title='$i18n.getText("jtrp.report.is.col.jtrp_col_type.tooltip")'>$i18n.getText("jtrp.report.is.col.jtrp_col_type")</th>
+                                            <th id='is_jtrp_col_priority' title='$i18n.getText("jtrp.report.is.col.jtrp_col_priority.tooltip")'>$i18n.getText("jtrp.report.is.col.jtrp_col_priority")</th>
+                                            <th>$i18n.getText("jtrp.report.is.col.jtrp_col_status")</th>
+                                            <th>$i18n.getText("jtrp.report.is.col.jtrp_col_assignee")</th>
+                                            <th>$i18n.getText("jtrp.report.is.col.jtrp_col_estimated")</th>
+                                            <th>$i18n.getText("jtrp.report.is.col.jtrp_col_remaining")</th>
+                                            <th>$i18n.getText("jtrp.report.is.col.jtrp_col_totalLogged")</th>
+                                            <th>$i18n.getText("jtrp.report.is.col.jtrp_col_expected") <span id="issue-expected-tooltip" class="aui-icon aui-icon-small aui-iconfont-help" title="$i18n.getText('jtrp.report.is.col.jtrp_col_expected.help')"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        #foreach ( $is in $issueSummaryReport.issueSummaries )
+                                        <tr>
+                                            <td>
+                                              <a href="$contextPath/browse/$is.issueKey" class="issue-link">$is.issueKey</a>
+                                            </td>
+                                            <td>$is.issueSummary</td>
+                                            <td>
+                                              <img class="img-tooltip" src="#if(!$is.issueAvatarId) #if( $is.issueTypeIconUrl.startsWith("http") )$is.issueTypeIconUrl#else$contextPath$is.issueTypeIconUrl#end#else$contextPath/secure/viewavatar?size=xsmall&avatarId=$is.issueAvatarId&avatarType=issuetype#end" alt="$is.issueTypeName" title="$is.issueTypeName"></img>
+                                            </td>
+                                            <td>
+                                              #if( $is.priorityIconUrl )
+                                                <img class="img-tooltip" src="#if( $is.priorityIconUrl.startsWith("http") )$is.priorityIconUrl#else$contextPath$is.priorityIconUrl#end" alt="$is.priorityName" title="$is.priorityName"></img>
+                                              #end
+                                            </td>
+                                            <td>
+                                              #set($issueStatus = $constantsManager.getStatusByTranslatedName($is.statusName))
+                                              #set($statusCategory = $issueStatus.getStatusCategory())
+                                              <span original-title="" class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-$statusCategory.colorName jira-issue-status-lozenge-$statusCategory.key aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="<span class=&quot;jira-issue-status-tooltip-title&quot;>$is.statusName</span>">$is.statusName</span>
+                                            </td>
+                                            <td>#if ( !$is.assignee ) $i18n.getText("jtrp.picker.unassigned.value") #else $is.assignee #end</td>
+                                            <td>$durationFormatter.exactDuration($is.orginalEstimatedSum)</td>
+                                            <td>$durationFormatter.exactDuration($is.reaminingTimeSum)</td>
+                                            <td>$durationFormatter.exactDuration($is.workloggedTimeSum)</td>
+                                            <td>$durationFormatter.exactDuration($is.expected)</td>
+                                        </tr>
+                                        #end
+                                    </tbody>
+                                </table>
+                                <div class="aui-group aui-group-split count-pagination">
+                                    <div class="aui-item">
+                                        <span class="results-count-text">
+                                            <span class="results-count results-count-start">$issueSummaryReport.paging.start</span> –
+                                            <span class="results-count results-count-end">$issueSummaryReport.paging.end</span> of 
+                                            <span class="results-count results-count-total results-count-link">$issueSummaryReport.issueSummaryCount</span>
+                                        </span>
+                                    </div>
+                                    <div class="aui-item">
+                                        <div class="pagination">
+                                            #set($isMaxPageNumber = $issueSummaryReport.paging.maxPageNumber)
+                                            
+                                            #if ( $isMaxPageNumber )
+                                              #set($isActPageNumber = $issueSummaryReport.paging.actPageNumber)
+                                              #set($filterLimit = $filterCondition.limit)
+                                              #if ( $isActPageNumber - 2 < 1 )
+                                                #set($inStart = 1)
+                                              #else
+                                                #set($inStart = $isActPageNumber - 2)
+                                              #end
+                                              #if ( $isActPageNumber + 2 > $isMaxPageNumber )
+                                                #set($inEnd = $isMaxPageNumber)
+                                              #else
+                                                #set($inEnd = $isActPageNumber + 2)
+                                              #end
+                                              #if ( $isActPageNumber < 3 )
+                                                #if ($isMaxPageNumber > 5) 
+                                                  #set($inEnd = 5) 
+                                                #else 
+                                                  #set($inEnd = $isMaxPageNumber) 
+                                                #end
+                                              #end
+                                              #if ( $isActPageNumber + 2 >= $isMaxPageNumber && $isMaxPageNumber - 4 > 0) 
+                                                  #set($inStart = $isMaxPageNumber - 4)
+                                              #end
+                                              
+                                              #if ( $isActPageNumber > 1 )
+                                            <a href="javascript:void(0);" onclick="everit.reporting.main.getIssueSummaryPage((($isActPageNumber - 1) * $filterLimit) - $filterLimit)">
+                                                <span class="aui-icon aui-icon-small aui-iconfont-arrows-left"></span>
+                                            </a>
+                                              #end
+                                              #foreach ( $page in [$inStart..$inEnd] ) 
+                                                #if ( $isActPageNumber == $page )
+                                            <strong>$page</strong>
+                                                #else
+                                            <a href="javascript:void(0);" onclick="everit.reporting.main.getIssueSummaryPage(($page * $filterLimit) - $filterLimit)">$page</a>
+                                                #end
+                                              #end
+                                              #if ( $isActPageNumber < $isMaxPageNumber )
+                                            <a href="javascript:void(0);" onclick="everit.reporting.main.getIssueSummaryPage((($isActPageNumber + 1) * $filterLimit) - $filterLimit)">
+                                                <span class="aui-icon aui-icon-small aui-iconfont-arrows-right"></span>
+                                            </a>
+                                              #end
+                                            #end 
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>

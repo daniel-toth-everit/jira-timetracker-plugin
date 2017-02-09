@@ -1,0 +1,670 @@
+#*
+ * Copyright (C) 2011 Everit Kft. (http://www.everit.org)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+                <div id="detailsModule" class="module toggle-wrap expanded #if( $collapsedDetailsModule )collapsed#end">
+                    <div id="detailsModuleHeading" class="mod-header">
+                        <h2 class="toggle-title"  onclick="everit.reporting.main.toggleModContent('details')">$i18n.getText("jtrp.report.head.worklog.detials")</h2>
+                    </div>
+                    <div class="mod-content">
+                        <div class="aui-group aui-group-split action-button-container">
+                            <div class="aui-item jtrp-export">
+                                <a id="detailsColumnsButton" href="#detailsColumnsDropDown" aria-owns="detailsColumnsDropDown" aria-haspopup="true" class="criteria-selector aui-button aui-button-subtle drop-arrow aui-dropdown2-trigger">$i18n.getText("jtrp.report.btn.columns")</a>
+	                            <div id="detailsColumnsDropDown" class="aui-style-default aui-dropdown2">
+	                              <div class="jttr-filter-field">
+	                                <div class='ajs-layer box-shadow'>
+	                                  <div>
+	                                    <div class='form-body'>
+	                                      <div class='field-group aui-field-issuetype'>
+	                                        <select  id="detailsColumns" name="detailsColumns"  multiple="multiple" >
+	                                          <option value="jtrp_col_project">$i18n.getText("jtrp.report.wd.col.jtrp_col_project")</option>
+	                                          <option value="jtrp_col_projectDescription">$i18n.getText("jtrp.report.wd.col.jtrp_col_projectDescription")</option>
+	                                          <option value="jtrp_col_issueKey">$i18n.getText("jtrp.report.wd.col.jtrp_col_issueKey")</option>
+	                                          <option value="jtrp_col_issueSummary">$i18n.getText("jtrp.report.wd.col.jtrp_col_issueSummary")</option>
+	                                          <option value="jtrp_col_type">$i18n.getText("jtrp.report.wd.col.jtrp_col_type.tooltip")</option>
+	                                          <option value="jtrp_col_status">$i18n.getText("jtrp.report.wd.col.jtrp_col_status")</option>
+	                                          <option value="jtrp_col_priority">$i18n.getText("jtrp.report.wd.col.jtrp_col_priority.tooltip")</option>
+	                                          <option value="jtrp_col_assignee">$i18n.getText("jtrp.report.wd.col.jtrp_col_assignee")</option>
+	                                          <option value="jtrp_col_reporter">$i18n.getText("jtrp.report.wd.col.jtrp_col_reporter")</option>
+	                                          <option value="jtrp_col_estimated">$i18n.getText("jtrp.report.wd.col.jtrp_col_estimated")</option>
+	                                          <option value="jtrp_col_remainingTime">$i18n.getText("jtrp.report.wd.col.jtrp_col_remainingTime")</option>
+	                                          <option value="jtrp_col_created">$i18n.getText("jtrp.report.wd.col.jtrp_col_created")</option>
+	                                          <option value="jtrp_col_updated">$i18n.getText("jtrp.report.wd.col.jtrp_col_updated")</option>
+	                                          <option value="jtrp_col_components">$i18n.getText("jtrp.report.wd.col.jtrp_col_components")</option>
+	                                          <option value="jtrp_col_affectedVersions">$i18n.getText("jtrp.report.wd.col.jtrp_col_affectedVersions")</option>
+	                                          <option value="jtrp_col_fixVersions">$i18n.getText("jtrp.report.wd.col.jtrp_col_fixVersions")</option>
+	                                          <option value="jtrp_col_resolution">$i18n.getText("jtrp.report.wd.col.jtrp_col_resolution")</option>
+	                                          <option value="jtrp_col_worklogDescription">$i18n.getText("jtrp.report.wd.col.jtrp_col_worklogDescription")</option>
+	                                          <option value="jtrp_col_user">$i18n.getText("jtrp.report.wd.col.jtrp_col_user.select")</option>
+	                                          <option value="jtrp_col_startTime">$i18n.getText("jtrp.report.wd.col.jtrp_col_startTime.select")</option>
+	                                          <option value="jtrp_col_timeSpent">$i18n.getText("jtrp.report.wd.col.jtrp_col_timeSpent.select")</option>
+	                                          <option value="jtrp_col_worklogCreated">$i18n.getText("jtrp.report.wd.col.jtrp_col_worklogCreated")</option>
+	                                          <option value="jtrp_col_worklogUpdated">$i18n.getText("jtrp.report.wd.col.jtrp_col_worklogUpdated")</option>
+	                                          <option value="jtrp_col_issueEpicLink">$i18n.getText("jtrp.report.wd.col.jtrp_col_issueEpicLink")</option>
+	                                          <option value="jtrp_col_issueEpicName">$i18n.getText("jtrp.report.wd.col.jtrp_col_issueEpicName")</option>
+	                                        </select>
+	                                      </div>
+	                                    </div>
+	                                  </div>
+	                                </div>
+	                              </div>
+	                            </div>
+                                <a id="worklogDetailsExportButton" href="#worklogDetailsExportDropDown" aria-owns="worklogDetailsExportDropDown" aria-haspopup="true" class="criteria-selector aui-button aui-button-subtle drop-arrow aui-dropdown2-trigger">
+                                  <span class="aui-icon aui-icon-small aui-iconfont-export"></span>
+                                  <span class="button-label">$i18n.getText("jtrp.report.btn.export")</span>
+                                </a>
+	                            <div id="worklogDetailsExportDropDown" class="aui-style-default aui-dropdown2">
+	                              <div class="jttr-filter-field">
+	                                <div class='ajs-layer box-shadow'>
+	                                  <div data-query>
+	                                    <div class='form-body checkboxmultiselect-container'>
+	                                      <div class='field-group aui-field-issuetype'>
+	                                        <ul class="aui-list-section">
+	                                          <li class="aui-list-item">
+	                                            <a id="detials-all-export" class="aui-list-item-link" target="hiddenFrameForDownload" href="#" data-jttp-href="$contextPath/rest/jttp-rest/1/download-report/downloadWorklogDetailsReport" onclick="return everit.reporting.main.updateDetailsAllExportHref(this)">$i18n.getText("jtrp.report.btn.export.excel.all")</a>
+	                                          </li>
+	                                          <li class="aui-list-item">
+	                                            <a id="detials-custom-export" class="aui-list-item-link" target="hiddenFrameForDownload" href="#" data-jttp-href="$contextPath/rest/jttp-rest/1/download-report/downloadWorklogDetailsReport" onclick="return everit.reporting.main.updateDetailsCustomExportHref(this)">$i18n.getText("jtrp.report.btn.export.excel.current")</a>
+	                                          </li>
+	                                           <li class="aui-list-item">
+	                                            <a id="detials-custom-export" class="aui-list-item-link" target="hiddenFrameForDownload" href="#" data-jttp-href="$contextPath/rest/jttp-rest/1/download-report/downloadWorklogDetailsReportAsCSV" onclick="return everit.reporting.main.updateDetailsAllExportHref(this)">$i18n.getText("jtrp.report.btn.export.csv.all")</a>
+	                                          </li>
+	                                           <li class="aui-list-item">
+	                                            <a id="detials-custom-export" class="aui-list-item-link" target="hiddenFrameForDownload" href="#" data-jttp-href="$contextPath/rest/jttp-rest/1/download-report/downloadWorklogDetailsReportAsCSV" onclick="return everit.reporting.main.updateDetailsCustomExportHref(this)">$i18n.getText("jtrp.report.btn.export.csv.current")</a>
+	                                          </li>
+	                                        </ul>
+	                                      </div>
+	                                    </div>
+	                                  </div>
+	                                </div>
+	                              </div>
+	                            </div>
+                            </div>
+                        </div>
+                        <div class="details-tale-container">
+                            <table id="worklogDetailsTable" class="aui jttp-aui-table-sortable reporting-table">
+                                #set($isNotShowProject = !$selectedWorklogDetailsColumns.contains("jtrp_col_project"))
+                                #set($isNotShowProjectDescription = !$selectedWorklogDetailsColumns.contains("jtrp_col_projectDescription"))
+                                #set($isNotShowType = !$selectedWorklogDetailsColumns.contains("jtrp_col_type"))
+                                #set($isNotShowStatus = !$selectedWorklogDetailsColumns.contains("jtrp_col_status"))
+                                #set($isNotShowPriority = !$selectedWorklogDetailsColumns.contains("jtrp_col_priority"))
+                                #set($isNotShowAssignee = !$selectedWorklogDetailsColumns.contains("jtrp_col_assignee"))
+                                #set($isNotShowReporter = !$selectedWorklogDetailsColumns.contains("jtrp_col_reporter"))
+                                #set($isNotShowEstimated = !$selectedWorklogDetailsColumns.contains("jtrp_col_estimated"))
+                                #set($isNotShowRemainingTime = !$selectedWorklogDetailsColumns.contains("jtrp_col_remainingTime"))
+                                #set($isNotShowCreated = !$selectedWorklogDetailsColumns.contains("jtrp_col_created"))
+                                #set($isNotShowUpdated = !$selectedWorklogDetailsColumns.contains("jtrp_col_updated"))
+                                #set($isNotShowComponents = !$selectedWorklogDetailsColumns.contains("jtrp_col_components"))
+                                #set($isNotShowAffectedVersions = !$selectedWorklogDetailsColumns.contains("jtrp_col_affectedVersions"))
+                                #set($isNotShowFixVersions = !$selectedWorklogDetailsColumns.contains("jtrp_col_fixVersions"))
+                                #set($isNotShowResolution = !$selectedWorklogDetailsColumns.contains("jtrp_col_resolution"))
+                                #set($isNotShowWorklogDescription = !$selectedWorklogDetailsColumns.contains("jtrp_col_worklogDescription"))
+                                #set($isNotShowIssueEpicName = !$selectedWorklogDetailsColumns.contains("jtrp_col_issueEpicName"))
+                                #set($isNotShowIssueEpicLink = !$selectedWorklogDetailsColumns.contains("jtrp_col_issueEpicLink"))
+                                #set($isNotShowStartTime = !$selectedWorklogDetailsColumns.contains("jtrp_col_startTime"))
+                                #set($isNotShowWorklogCreated = !$selectedWorklogDetailsColumns.contains("jtrp_col_worklogCreated"))
+                                #set($isNotShowWorklogUpdated = !$selectedWorklogDetailsColumns.contains("jtrp_col_worklogUpdated"))
+                                #set($isNotShowIssueKey = !$selectedWorklogDetailsColumns.contains("jtrp_col_issueKey"))
+                                #set($isNotShowIssueSummary = !$selectedWorklogDetailsColumns.contains("jtrp_col_issueSummary"))
+                                #set($isNotShowUser = !$selectedWorklogDetailsColumns.contains("jtrp_col_user"))
+                                #set($isNotShowTimeSpent = !$selectedWorklogDetailsColumns.contains("jtrp_col_timeSpent"))
+                                   
+                                #set($defaultOrder = "ASC")
+                                #set($isAscOrder = $order.equals("ASC"))
+                                <thead>
+                                    <tr> 
+                                        #if( $orderColumn.equals("jtrp_col_project" ) )
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_project', '$orderName');" 
+                                          data-jtrp-col-name="jtrp_col_project"
+                                          class="jtrp_col_project jttp-tablesorter-header $className" style="#if( $isNotShowProject )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_project")
+                                            <span>
+                                        </th>
+                                        
+                                        <th data-jtrp-col-name="jtrp_col_projectDescription"
+                                          class="jtrp_col_projectDescription jttp-tablesorter-header jttp-aui-table-column-unsortable" style="#if( $isNotShowProjectDescription )display:none;#end">
+                                            <span>
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_projectDescription")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_issueKey") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_issueKey', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_issueKey"
+                                          class="jtrp_col_issueKey jttp-tablesorter-header $className" style="#if( $isNotShowIssueKey )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_issueKey")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_issueSummary") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_issueSummary', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_issueSummary"
+                                          class="jtrp_col_issueSummary jttp-tablesorter-header $className" style="#if( $isNotShowIssueSummary )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_issueSummary")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_type") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_type', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_type"
+                                          class="jtrp_col_type jttp-tablesorter-header $className" id="jtrp_col_type" style="#if( $isNotShowType )display:none;#end" 
+                                          title='$i18n.getText("jtrp.report.wd.col.jtrp_col_type.tooltip")'>
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_type")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_status") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_status',  '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_status"
+                                          class="jtrp_col_status jttp-tablesorter-header $className" style="#if( $isNotShowStatus )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_status")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_priority") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_priority', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_priority"
+                                          class="jtrp_col_priority jttp-tablesorter-header $className" id="jtrp_col_priority" style="#if( $isNotShowPriority )display:none;#end"  
+                                          title='$i18n.getText("jtrp.report.wd.col.jtrp_col_priority.tooltip")'>
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_priority")
+                                            <span>
+                                        </th> 
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_assignee") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end                                       
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_assignee', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_assignee"
+                                          class="jtrp_col_assignee jttp-tablesorter-header $className" style="#if( $isNotShowAssignee )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_assignee")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_reporter") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_reporter', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_reporter"
+                                          class="jtrp_col_reporter jttp-tablesorter-header $className" style="#if( $isNotShowReporter )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_reporter")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_estimated") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_estimated', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_estimated"
+                                          class="jtrp_col_estimated jttp-tablesorter-header $className" style="#if( $isNotShowEstimated )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_estimated")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_remainingTime") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_remainingTime', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_remainingTime"
+                                          class="jtrp_col_remainingTime jttp-tablesorter-header $className" style="#if( $isNotShowRemainingTime )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_remainingTime")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_created") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_created', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_created"
+                                          class="jtrp_col_created jttp-tablesorter-header $className" style="#if( $isNotShowCreated )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_created")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_updated") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_updated', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_updated"
+                                          class="jtrp_col_updated jttp-tablesorter-header $className" style="#if( $isNotShowUpdated )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_updated")
+                                            <span>
+                                        </th>
+                                        
+                                        <th data-jtrp-col-name="jtrp_col_components"
+                                          class="jtrp_col_components jttp-tablesorter-header jttp-aui-table-column-unsortable" style="#if( $isNotShowComponents )display:none;#end">
+                                            <span>
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_components")
+                                            <span>
+                                        </th>
+                                        
+                                        <th data-jtrp-col-name="jtrp_col_affectedVersions"
+                                         class="jtrp_col_affectedVersions jttp-tablesorter-header jttp-aui-table-column-unsortable" style="#if( $isNotShowAffectedVersions )display:none;#end">
+                                            <span>
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_affectedVersions")
+                                            <span>
+                                        </th>
+                                        
+                                        <th data-jtrp-col-name="jtrp_col_fixVersions"
+                                         class="jtrp_col_fixVersions jttp-tablesorter-header jttp-aui-table-column-unsortable" style="#if( $isNotShowFixVersions )display:none;#end">
+                                            <span>
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_fixVersions")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_resolution") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_resolution', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_resolution"
+                                          class="jtrp_col_resolution jttp-tablesorter-header $className" style="#if( $isNotShowResolution )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_resolution")
+                                            <span>
+                                        </th>
+                                        
+                                        <th data-jtrp-col-name="jtrp_col_worklogDescription"
+                                          class="jtrp_col_worklogDescription jttp-tablesorter-header jttp-aui-table-column-unsortable" style="#if( $isNotShowWorklogDescription )display:none;#end">
+                                            <span>
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_worklogDescription")
+                                            <span>
+                                        </th>
+                                        
+                                          #if( $orderColumn.equals("jtrp_col_issueEpicName") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                         <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_issueEpicName', '$orderName');" 
+                                           data-jtrp-col-name="jtrp_col_issueEpicName"
+                                          class="jtrp_col_issueEpicName jttp-tablesorter-header $className" style="#if( $isNotShowIssueEpicName )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_issueEpicName")
+                                            <span>
+                                        </th>
+                                        
+                                         #if( $orderColumn.equals("jtrp_col_issueEpicLink") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                         <th  onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_issueEpicLink', '$orderName');"
+                                         data-jtrp-col-name="jtrp_col_issueEpicLink" 
+                                          class="jtrp_col_issueEpicLink jttp-tablesorter-header $className" style="#if( $isNotShowIssueEpicLink )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_issueEpicLink")
+                                            <span>
+                                        </th>
+                                        #if( $orderColumn.equals("jtrp_col_user") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_user', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_user"
+                                          class="jtrp_col_user user-tooltip jttp-tablesorter-header $className" style="#if( $isNotShowUser )display:none;#end"
+                                          title="$i18n.getText('jtrp.report.wd.col.jtrp_col_user.help')">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_user")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_startTime") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_startTime', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_startTime"
+                                          class="jtrp_col_startTime jttp-tablesorter-header $className" style="#if( $isNotShowStartTime )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_startTime")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_timeSpent") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_timeSpent', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_timeSpent"
+                                          class="jtrp_col_timeSpent jttp-tablesorter-header $className" style="#if( $isNotShowTimeSpent )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_timeSpent")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_worklogCreated") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_worklogCreated', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_worklogCreated"
+                                          class="jtrp_col_worklogCreated jttp-tablesorter-header $className" style="#if( $isNotShowWorklogCreated )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_worklogCreated")
+                                            <span>
+                                        </th>
+                                        
+                                        #if( $orderColumn.equals("jtrp_col_worklogUpdated") ) 
+                                          #if( $isAscOrder ) 
+                                            #set($orderName = 'DESC') 
+                                            #set($className = 'jttp-tablesorter-headerAsc') 
+                                          #else 
+                                            #set($orderName = 'ASC') 
+                                            #set($className = 'jttp-tablesorter-headerDesc') 
+                                          #end 
+                                        #else 
+                                          #set($orderName = $defaultOrder)
+                                          #set($className = '') 
+                                        #end
+                                        <th onclick="everit.reporting.main.getWorklogDetailsPage(0, 'jtrp_col_worklogUpdated', '$orderName');"
+                                          data-jtrp-col-name="jtrp_col_worklogUpdated"
+                                          class="jtrp_col_worklogUpdated jttp-tablesorter-header $className" style="#if( $isNotShowWorklogUpdated )display:none;#end">
+                                            <span class="jttp-aui-table-header-content">
+                                              $i18n.getText("jtrp.report.wd.col.jtrp_col_worklogUpdated")
+                                            <span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    #foreach ( $wd in $worklogDetailsReport.worklogDetails )
+                                    <tr>
+                                        <td class="jtrp_col_project" style="#if( $isNotShowProject )display:none;#end">
+                                          <a href="$contextPath/browse/$wd.projectKey" class="issue-link">$wd.projectName</a>
+                                        </td>
+                                        <td class="jtrp_col_projectDescription" style="#if( $isNotShowProjectDescription )display:none;#end">#if ( $wd.projectDescription ) $wd.projectDescription #end</td>
+                                        <td class="jtrp_col_issueKey" style="#if( $isNotShowIssueKey )display:none;#end">
+                                          <a href="$contextPath/browse/$wd.issueKey" class="issue-link">$wd.issueKey</a>
+                                        </td>
+                                        <td class="jtrp_col_issueSummary" style="#if( $isNotShowIssueSummary )display:none;#end">$wd.issueSummary</td>
+                                        <td class="jtrp_col_type" style="#if( $isNotShowType )display:none;#end">
+                                          <img class="img-tooltip" src="#if(!$wd.issueAvatarId) #if( $wd.issueTypeIconUrl.startsWith("http") )$wd.issueTypeIconUrl#else$contextPath$wd.issueTypeIconUrl#end#else$contextPath/secure/viewavatar?size=xsmall&avatarId=$wd.issueAvatarId&avatarType=issuetype#end" alt="$wd.issueTypeName" title="$wd.issueTypeName"></img>
+                                        </td>
+                                        <td class="jtrp_col_status" style="#if( $isNotShowStatus )display:none;#end">
+                                          #set($issueStatus = $constantsManager.getStatusByTranslatedName($wd.issueStatusName))
+                                          #set($statusCategory = $issueStatus.getStatusCategory())
+                                          <span original-title="" class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-$statusCategory.colorName jira-issue-status-lozenge-$statusCategory.key aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="<span class=&quot;jira-issue-status-tooltip-title&quot;>$wd.issueStatusName</span>">$wd.issueStatusName</span>
+                                        </td>
+                                        <td class="jtrp_col_priority" style="#if( $isNotShowPriority )display:none;#end">
+                                          #if( $wd.priorityIconUrl )
+                                            <img class="img-tooltip" src="#if( $wd.priorityIconUrl.startsWith("http") )$wd.priorityIconUrl#else$contextPath$wd.priorityIconUrl#end" alt="$wd.priorityName" title="$wd.priorityName"></img>
+                                          #end
+                                        </td>
+                                        <td class="jtrp_col_assignee" style="#if( $isNotShowAssignee )display:none;#end">#if ( !$wd.issueAssignee ) $i18n.getText("jtrp.picker.unassigned.value") #else $wd.issueAssignee #end</td>
+                                        <td class="jtrp_col_reporter" style="#if( $isNotShowReporter )display:none;#end">$wd.issueReporter</td>
+                                        <td class="jtrp_col_estimated" style="#if( $isNotShowEstimated )display:none;#end">#if ( !$wd.issueOriginalEstimate ) #else $durationFormatter.exactDuration($wd.issueOriginalEstimate) #end</td>
+                                        <td class="jtrp_col_remainingTime" style="#if( $isNotShowRemainingTime )display:none;#end">#if ( !$wd.issueRemainingEstimate ) #else $durationFormatter.exactDuration($wd.issueRemainingEstimate) #end</td>
+                                        <td class="jtrp_col_created" style="#if( $isNotShowCreated )display:none;#end">$dateTimeFormatterDate.format($wd.issueCreated)</td>
+                                        <td class="jtrp_col_updated" style="#if( $isNotShowUpdated )display:none;#end">$dateTimeFormatterDate.format($wd.issueUpdated)</td>
+                                        <td class="jtrp_col_components" style="#if( $isNotShowComponents )display:none;#end">#if ( !$wd.issueComponents.isEmpty() ) #foreach ( $component in $wd.issueComponents )#if($velocityCount> 1),#end $component#end #end</td>
+                                        <td class="jtrp_col_affectedVersions" style="#if( $isNotShowAffectedVersions )display:none;#end">#if ( !$wd.issueAffectedVersions.isEmpty() ) #foreach ( $affectedVersion in $wd.issueAffectedVersions )#if($velocityCount> 1),#end $affectedVersion #end #end</td>
+                                        <td class="jtrp_col_fixVersions" style="#if( $isNotShowFixVersions )display:none;#end">#if ( !$wd.issueFixedVersions.isEmpty() ) #foreach ( $fixedVersion in $wd.issueFixedVersions )#if($velocityCount> 1),#end $fixedVersion #end #end</td>
+                                        <td class="jtrp_col_resolution" style="#if( $isNotShowResolution )display:none;#end">#if ( !$wd.resolutionName )$i18n.getText("jtrp.picker.unresolved.value") #else $wd.resolutionName #end</td>
+                                        <td class="jtrp_col_worklogDescription" style="#if( $isNotShowWorklogDescription )display:none;#end">$atlassianWikiRenderer.render($wd.worklogBody, $issueRenderContext)</td>
+                                        <td class="jtrp_col_issueEpicName" style="#if( $isNotShowIssueEpicName )display:none;#end">#if ( !$wd.issueEpicName ) #else $wd.issueEpicName #end</td>
+                                        <td class="jtrp_col_issueEpicLink" style="#if( $isNotShowIssueEpicLink )display:none;#end">#if ( !$wd.issueEpicLink ) #else $wd.issueEpicLink #end</td>
+                                        <td class="jtrp_col_user" style="#if( $isNotShowUser )display:none;#end">#if ($wd.worklogUser) $wd.worklogUser #else $i18n.getText("jtrp.plugin.anonymus") #end</td>
+                                        <td class="jtrp_col_startTime" style="#if( $isNotShowStartTime )display:none;#end">$dateTimeFormatterDateTime.format($wd.worklogStartDate)</td>
+                                        <td class="jtrp_col_timeSpent" style="#if( $isNotShowTimeSpent )display:none;#end">$durationFormatter.exactDuration($wd.worklogTimeWorked)</td>
+                                        <td class="jtrp_col_worklogCreated" style="#if( $isNotShowWorklogCreated )display:none;#end">$dateTimeFormatterDate.format($wd.worklogCreated)</td>
+                                        <td class="jtrp_col_worklogUpdated" style="#if( $isNotShowWorklogUpdated )display:none;#end">$dateTimeFormatterDate.format($wd.worklogUpdated)</td>
+                                    </tr>
+                                    #end
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="aui-group aui-group-split count-pagination">
+                            <div class="aui-item">
+                                <span class="results-count-text">
+                                    <span class="results-count results-count-start">$worklogDetailsReport.paging.start</span> –
+                                    <span class="results-count results-count-end">$worklogDetailsReport.paging.end</span> of 
+                                    <span class="results-count results-count-total results-count-link">$worklogDetailsReport.worklogDetailsCount</span>
+                                </span>
+                            </div>
+                            <div class="aui-item">
+                                <div class="pagination">
+                                    #set($wdMaxPageNumber = $worklogDetailsReport.paging.maxPageNumber)
+                                    
+                                    #if ( $wdMaxPageNumber )
+                                      #set($wdActPageNumber = $worklogDetailsReport.paging.actPageNumber)
+                                      #set($filterLimit = $filterCondition.limit)
+                                      #if ( $wdActPageNumber - 2 < 1 )
+                                        #set($inStart = 1)
+                                      #else
+                                        #set($inStart = $wdActPageNumber - 2)
+                                      #end
+                                      #if ( $wdActPageNumber + 2 > $wdMaxPageNumber )
+                                        #set($inEnd = $wdMaxPageNumber)
+                                      #else
+                                        #set($inEnd = $wdActPageNumber + 2)
+                                      #end
+                                      #if ( $wdActPageNumber < 3 )
+                                        #if ($wdMaxPageNumber > 5) 
+                                          #set($inEnd = 5) 
+                                        #else 
+                                          #set($inEnd = $wdMaxPageNumber) 
+                                        #end
+                                      #end
+                                      #if ( $wdActPageNumber + 2 >= $wdMaxPageNumber && $wdMaxPageNumber - 4 > 0 ) 
+                                        #set($inStart = $wdMaxPageNumber - 4)
+                                      #end
+                                    
+                                      #if ( $wdActPageNumber > 1 )
+                                    <a href="javascript:void(0);" onclick="everit.reporting.main.getWorklogDetailsPage((($wdActPageNumber - 1) * $filterLimit) - $filterLimit, '$orderColumn', '$order')">
+                                        <span class="aui-icon aui-icon-small aui-iconfont-arrows-left"></span>
+                                    </a>
+                                      #end
+                                      #foreach ( $page in [$inStart..$inEnd] ) 
+                                        #if ( $wdActPageNumber == $page )
+                                    <strong>$page</strong>
+                                        #else
+                                    <a href="javascript:void(0);" onclick="everit.reporting.main.getWorklogDetailsPage(($page * $filterLimit) - $filterLimit, '$orderColumn', '$order')">$page</a>
+                                        #end
+                                      #end
+                                      #if ( $wdActPageNumber < $wdMaxPageNumber )
+                                    <a href="javascript:void(0);" onclick="everit.reporting.main.getWorklogDetailsPage((($wdActPageNumber + 1) * $filterLimit) - $filterLimit, '$orderColumn', '$order')">
+                                        <span class="aui-icon aui-icon-small aui-iconfont-arrows-right"></span>
+                                    </a>
+                                      #end
+                                    #end
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

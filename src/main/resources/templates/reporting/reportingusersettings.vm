@@ -1,0 +1,127 @@
+#*
+ * Copyright (C) 2011 Everit Kft. (http://www.everit.org)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+<html>
+<head>
+  <title>Reporting User Settings</title>
+</head>
+<body>
+  $webResourceManager.requireResourcesForContext("org.everit.jira.timetracker.plugin.reporting-user-settings-resources")
+
+  <script type="text/javascript">
+    window.everit = window.everit || {};
+    everit.jttp = everit.jttp || {};
+    everit.jttp.reporting_admin = everit.jttp.reporting_admin || {};
+
+    (function(jttp, jQuery) {
+      jttp.options = jQuery.extend( 
+        {},
+        jttp.options,
+        {
+          pageSize : ${pageSize}
+        }
+      );
+    })(everit.jttp.reporting_admin, AJS.$);
+  </script>
+
+  <header class="aui-page-header">
+    <div class="aui-page-header-inner">
+      <div class="aui-page-header-image">
+        <span class="aui-avatar aui-avatar-large">
+          <span class="aui-avatar-inner">
+            <a href="http://www.everit.biz/solutions-for-atlassian-jira/index_en" target="_blank">
+              <div class="everit_logo" alt="Everit reporting logo"></div>
+            </a>
+          </span>
+        </span>
+      </div>
+      <div class="aui-page-header-main">
+        <h1>Reporting Settings</h1>
+      </div>
+      <div class="aui-page-header-actions">
+        <p class="installed-version">$i18n.getText("plugin.settings.installed.plugin.version") $analyticsDTO.pluginVersion<p>
+      </div>
+    </div>
+  </header>
+  
+  <div class="aui-page-panel">
+    <div class="aui-page-panel-inner aui-page-panel-content">
+      <form name="userSettingForm"  method="post" action="ReportingUserSettingsWebAction.jspa" class="aui">  
+        #if(!$message.isEmpty())
+        <div id="error_message">
+          $i18n.getText($message)
+        </div>
+        #end
+        
+        <div class="field-group">
+          <label for="reportingGroupSelect">$i18n.getText("jtrp.plugin.reporting.pagination")</label>
+          <div>
+            <input type="hidden" id="pageSizeInput" name="pageSizeInput"/>
+            <a id="pageSizeButton" href="#pagesize-dropdown2-checkbox-radio-interactive-trigger" 
+              aria-owns="pagesize-dropdown2-checkbox-radio-interactive" aria-haspopup="true" 
+              class="aui-button aui-style-default aui-dropdown2-trigger">
+              Dropdown trigger
+            </a>
+            <!-- Dropdown -->
+            <div id="pagesize-dropdown2-checkbox-radio-interactive" class="aui-dropdown2 aui-style-default">
+              <div class="aui-dropdown2-section">
+                <ul>
+                  <li><a id="pages_5" class="aui-dropdown2-radio interactive">5</a></li>
+                  <li><a id="pages_10" class="aui-dropdown2-radio interactive">10</a></li>
+                  <li><a id="pages_15" class="aui-dropdown2-radio interactive">15</a></li>
+                  <li><a id="pages_20" class="aui-dropdown2-radio interactive">20</a></li>
+                  <li><a id="pages_25" class="aui-dropdown2-radio interactive">25</a></li>
+                  <li><a id="pages_30" class="aui-dropdown2-radio interactive">30</a></li>
+                  <li><a id="pages_35" class="aui-dropdown2-radio interactive">35</a></li>
+                  <li><a id="pages_40" class="aui-dropdown2-radio interactive">40</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="description">$i18n.getText("jtrp.plugin.reporting.pagination.desc")</div>
+        </div>
+        
+        <div class="field-group">
+          <label for="reportingGroupSelect">$i18n.getText("jtrp.plugin.reporting.popup.check")</label>
+          <input id="user_popup" type="checkbox" value="user_popup" name="user_popup" #if(!$userPopupVisible) checked #end />
+          <div class="description">$i18n.getText("jtrp.plugin.reporting.popup.check.desc")</div>
+        </div>
+        
+        <div class="field-group">
+          <label>$i18n.getText("jtrp.plugin.reporting.time.format"):</label>
+          <div>
+            <input id="radioSeconds" type="radio" name="worklogTimeInSeconds" value="second" #if($worklogTimeInSeconds) checked #end/>
+            <label for="radioSeconds">$i18n.getText("jtrp.plugin.reporting.time.format.sec")</label>
+            <input id="radioDefault" type="radio" name="worklogTimeInSeconds" value="default" #if(!$worklogTimeInSeconds) checked #end/>
+            <label for="radioDefault">$i18n.getText("jtrp.plugin.reporting.time.format.def")</label>
+          </div>
+          <div class="description">$i18n.getText("jtrp.plugin.reporting.time.format.desc")</div>
+        </div>
+        
+        <div class="buttons-container">
+          <div class="buttons">
+            <input id="savesettings"  type="submit" name="savesettings" value="$i18n.getText('plugin.save')" class="aui-button aui-button-primary"/>
+            <input id="resetButton"  type="button" name="reset" value="$i18n.getText('plugin.reset')" onclick="location.href='ReportingUserSettingsWebAction!default.jspa'" class="aui-button"/>
+            <input id="cancelButton"  type="button" name="cancel" value="$i18n.getText('plugin.cancel')" onclick="location.href='ReportingWebAction!default.jspa'" class="aui-button"/>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Issue Collector script -->
+  <script type="text/javascript" src="$issueCollectorSrc"></script>
+</body>
+</html>

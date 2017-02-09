@@ -17,6 +17,7 @@ package org.everit.jira.timetracker.plugin.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -38,14 +39,9 @@ public class PluginSettingsValues implements Serializable {
   public List<Pattern> collectorIssues;
 
   /**
-   * End time rounding change value.
-   */
-  public int endTimeChange;
-
-  /**
    * Exclude dates.
    */
-  public String excludeDates;
+  public Set<String> excludeDates;
 
   /**
    * The non working issues list.
@@ -55,23 +51,12 @@ public class PluginSettingsValues implements Serializable {
   /**
    * Include dates.
    */
-  public String includeDates;
+  public Set<String> includeDates;
 
   /**
-   * The plugin calendar show the actual date when start or the latest day what not contains
-   * worklog.
+   * The plugin groups.
    */
-  public Boolean isActualDate;
-
-  /**
-   * The plugin calendar is popup.
-   */
-  public int isCalendarPopup;
-
-  /**
-   * Coloring settings.
-   */
-  public Boolean isColoring;
+  public List<String> pluginGroups;
 
   /**
    * The plugin UUID.
@@ -79,25 +64,15 @@ public class PluginSettingsValues implements Serializable {
   public String pluginUUID;
 
   /**
-   * Start time rounding value change.
+   * The timetarckning groups.
    */
-  public int startTimeChange;
+  public List<String> timetrackingGroups;
 
   public PluginSettingsValues() {
   }
 
-  public PluginSettingsValues actualDate(final boolean actualDateOrLastWorklogDate) {
-    isActualDate = actualDateOrLastWorklogDate;
-    return this;
-  }
-
   public PluginSettingsValues analyticsCheck(final boolean analyticsCheck) {
     this.analyticsCheck = analyticsCheck;
-    return this;
-  }
-
-  public PluginSettingsValues calendarPopup(final int isCalendarPopup) {
-    this.isCalendarPopup = isCalendarPopup;
     return this;
   }
 
@@ -106,17 +81,7 @@ public class PluginSettingsValues implements Serializable {
     return this;
   }
 
-  public PluginSettingsValues coloring(final boolean isColoring) {
-    this.isColoring = isColoring;
-    return this;
-  }
-
-  public PluginSettingsValues endTimeChange(final int endTimeChange) {
-    this.endTimeChange = endTimeChange;
-    return this;
-  }
-
-  public PluginSettingsValues excludeDates(final String excludeDates) {
+  public PluginSettingsValues excludeDates(final Set<String> excludeDates) {
     this.excludeDates = excludeDates;
     return this;
   }
@@ -127,13 +92,13 @@ public class PluginSettingsValues implements Serializable {
     return this;
   }
 
-  public PluginSettingsValues includeDates(final String includeDates) {
+  public PluginSettingsValues includeDates(final Set<String> includeDates) {
     this.includeDates = includeDates;
     return this;
   }
 
-  public PluginSettingsValues isCalendarPopup(final int isCalendarPopup) {
-    this.isCalendarPopup = isCalendarPopup;
+  public PluginSettingsValues pluginGroups(final List<String> pluginGroups) {
+    this.pluginGroups = pluginGroups;
     return this;
   }
 
@@ -142,8 +107,8 @@ public class PluginSettingsValues implements Serializable {
     return this;
   }
 
-  public PluginSettingsValues startTimeChange(final int startTimeChange) {
-    this.startTimeChange = startTimeChange;
+  public PluginSettingsValues timetrackingGroups(final List<String> timetrackingGroups) {
+    this.timetrackingGroups = timetrackingGroups;
     return this;
   }
 

@@ -1,0 +1,82 @@
+#*
+ * Copyright (C) 2011 Everit Kft. (http://www.everit.org)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+                <div id="summaryModule" class="module summary-module toggle-wrap expanded #if( $collapsedSummaryModule )collapsed#end">
+                    <div id="summaryModuleHeading" class="mod-header">
+                        <h2 class="toggle-title" onclick="everit.reporting.main.toggleModContent('summary')">$i18n.getText("jtrp.report.head.quick.summary")</h2>
+                    </div>
+                    <div class="mod-content">
+                      <div class="aui-group aui-group-split action-button-container">
+                         <div class="aui-item jtrp-export">
+                           <a id="worklogSummaryesExportButton" href="#worklogSummaryesExportDropDown" aria-owns="worklogSummaryesExportDropDown" aria-haspopup="true" class="criteria-selector aui-button aui-button-subtle drop-arrow aui-dropdown2-trigger">
+                                  <span class="aui-icon aui-icon-small aui-iconfont-export"></span>
+                                  <span class="button-label">$i18n.getText("jtrp.report.btn.export")</span>
+                           </a>
+                           <div id="worklogSummaryesExportDropDown" class="aui-style-default aui-dropdown2">
+	                              <div class="jttr-filter-field">
+	                                <div class='ajs-layer box-shadow'>
+	                                  <div data-query>
+	                                    <div class='form-body checkboxmultiselect-container'>
+	                                      <div class='field-group aui-field-issuetype'>
+	                                        <ul class="aui-list-section">
+	                                          <li class="aui-list-item">
+	                                            <a id="summaries-export" class="aui-list-item-link" target="hiddenFrameForDownload" href="#" data-jttp-href="$contextPath/rest/jttp-rest/1/download-report/downloadSummariesReport" onclick="return everit.reporting.main.updateSummariesExportHref(this)">$i18n.getText("jtrp.report.btn.summary.export.excel")</a>
+	                                          </li>
+	                                          <li class="aui-list-item">
+	                                            <a id="summaries-export-as-csv" class="aui-list-item-link" target="hiddenFrameForDownload" href="#" data-jttp-href="$contextPath/rest/jttp-rest/1/download-report/downloadSummariesReportAsCSV" onclick="return everit.reporting.main.updateSummariesExportHref(this)">$i18n.getText("jtrp.report.btn.summary.export.csv")</a>
+	                                          </li>
+	                                        </ul>
+	                                      </div>
+	                                    </div>
+	                                  </div>
+	                                </div>
+	                              </div>
+	                           </div>
+	                     </div>
+	                  </div>
+                        <div class="aui-tabs horizontal-tabs" data-aui-responsive>
+                            #set($isTabsProjectActive = $selectedActiveTab == "tabs-project")
+                            #set($isTabsIssueActive = $selectedActiveTab == "tabs-issue")
+                            #set($isTabsUserActive = $selectedActiveTab == "tabs-user")
+
+                            <ul class="tabs-menu">
+                                <li class="menu-item #if( $isTabsProjectActive )active-tab#end">
+                                    <a href="#tabs-project">Project</a>
+                                </li>
+                                <li class="menu-item #if( $isTabsIssueActive )active-tab#end">
+                                    <a href="#tabs-issue">Issue</a>
+                                </li>
+                                <li class="menu-item #if( $isTabsUserActive )active-tab#end">
+                                    <a href="#tabs-user">User</a>
+                                </li>
+                            </ul>
+                            <div class="tabs-pane #if( $isTabsProjectActive )active-pane#end" id="tabs-project">
+                            #parse("templates/reporting/reporting_result_project_summary.vm")
+                            </div>
+                            <div class="tabs-pane #if( $isTabsIssueActive )active-pane#end" id="tabs-issue">
+                            #parse("templates/reporting/reporting_result_issue_summary.vm")
+                            </div>
+                            <div class="tabs-pane #if( $isTabsUserActive )active-pane#end" id="tabs-user">
+                            #parse("templates/reporting/reporting_result_user_summary.vm")
+                            </div>
+                        </div>
+                        <div class="grand-total-container">
+                            <div class="grand-total">
+                                <p class="grand-total-item grand-total-header">$i18n.getText("jtrp.report.grand.total")</p>
+                                <p class="grand-total-item grand-total-value">$durationFormatter.exactDuration($worklogDetailsReport.grandTotal)</p>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>

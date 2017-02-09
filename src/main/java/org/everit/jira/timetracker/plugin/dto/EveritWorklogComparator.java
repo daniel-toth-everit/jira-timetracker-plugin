@@ -16,11 +16,10 @@
 package org.everit.jira.timetracker.plugin.dto;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
 
-import org.everit.jira.timetracker.plugin.DateTimeConverterUtil;
+import org.everit.jira.timetracker.plugin.util.DateTimeConverterUtil;
 
 /**
  * The comparator of the {@link EveritWorklog}.
@@ -50,7 +49,7 @@ public final class EveritWorklogComparator implements Comparator<EveritWorklog>,
     try {
       o1StartDate = DateTimeConverterUtil.stringTimeToDateTime(o1.getStartTime());
       o2StartDate = DateTimeConverterUtil.stringTimeToDateTime(o2.getStartTime());
-    } catch (ParseException e) {
+    } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException("Faild to convert startDate to Date", e);
     }
     int result = o1StartDate.compareTo(o2StartDate);
@@ -62,7 +61,7 @@ public final class EveritWorklogComparator implements Comparator<EveritWorklog>,
     try {
       o1EndDate = DateTimeConverterUtil.stringTimeToDateTime(o1.getEndTime());
       o2EndDate = DateTimeConverterUtil.stringTimeToDateTime(o2.getEndTime());
-    } catch (ParseException e) {
+    } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException("Faild to convert endDate to Date", e);
     }
     return o1EndDate.compareTo(o2EndDate);
